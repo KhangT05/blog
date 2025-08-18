@@ -68,7 +68,7 @@ const generateRefreshToken = async (user) => {
         refreshToken,
     }
 }
-const setAuthCookies = async (res, tokens) => {
+const setAuthCookies = (res, tokens) => {
     const cookieOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
@@ -88,7 +88,7 @@ const verifyToken = async (token) => {
         email:decoded.email
     }
 }
-const clearCookies = async (res) => {
+const clearCookies = (res) => {
     res.clearCookie('refreshToken', { path: '/' })
 }
 module.exports = {

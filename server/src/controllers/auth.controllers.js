@@ -12,7 +12,6 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     try {
         const result = await authService.login(req.body);
-        console.log(result.user)
         const accessToken = await authService.generateAccessToken(result.user);
         const token = await authService.generateRefreshToken(result.user);
         await authService.setAuthCookies(res, token);
@@ -32,7 +31,6 @@ const refreshToken = async (req, res) => {
         return res.status(404).json({ message: 'Người dùng không tồn tại' });
     }
     const newAccessToken = await authService.generateAccessToken(user);
-    console.log(newAccessToken)
     const newRefreshToken = await authService.generateRefreshToken(user);
     await authService.setAuthCookies(res,newRefreshToken);
     return res.status(200).json({

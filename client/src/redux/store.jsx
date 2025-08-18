@@ -5,6 +5,7 @@ import toastSlice from './slice/toastSlice'
 const store = configureStore({
     reducer: {
         auth: authReducer,
+        toast:toastSlice
     }
 })
 export default store

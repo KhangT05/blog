@@ -13,4 +13,19 @@ const authenticateToken = async (req, res, next) => {
         next();
     });
 }
-module.exports = authenticateToken
+const asyncHandler = fn => {
+    return (req, res, next) => {
+        fn(req, res, next).catch(next);
+    }
+}
+const errorHandler = (err, req, res, next) => {
+    res.status(err.status || 500).json({
+        success: false,
+        message: err.message || 'Internal Server Error'
+    })
+}
+module.exports = {
+    authenticateToken,
+    asyncHandler,
+    errorHandler
+}

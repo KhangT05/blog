@@ -6,11 +6,24 @@ import store from './redux/store'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Login from './pages/auth/login'
 import NotFound from './pages/notfound'
+import AuthMiddleware from './middleware/AuthMiddleware'
+import Dashboard from './pages/public/dashboard'
 const router = createBrowserRouter([
   {
-    path: '/account/login',
+    path: '/auth/login',
     element: <Login/>
-  },{
+  },
+  {
+    path:'/',
+    element:
+    <AuthMiddleware>
+      <Dashboard/>
+    </AuthMiddleware>,
+    // children:[
+      
+    // ]
+  },
+  {
     path:'*',
     element:<NotFound/>
   }
