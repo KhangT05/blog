@@ -1,38 +1,28 @@
-import { useSelector } from "react-redux";
-import { Navigate, useLocation } from "react-router-dom"
-
-
+import { setLogin, setLogout } from "@/redux/slice/authSlice";
+import { fetchUser } from "@/services/AuthServices";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom"
 function AuthMiddleware({ children }) {
-    const location = useLocation();
-    const { isAuthenticated, user } = useSelector(state => state.auth)
-    if (
-        !isAuthenticated &&
-        !((location.pathname.includes('/login')) ||
-        (location.pathname.includes('/register')))
-    ) {
-        return <Navigate to={'/auth/login'} />
-    }
-    if (
-        isAuthenticated &&
-        location.pathname.includes('/login')) {
-        if (user?.role === 'admin') {
-            return <Navigate to={'/admin/home'} />
-        } else {
-            return <Navigate to={'/'} />
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { isAuthenticated, user } = useSelector(state => state.auth);
+    useEffect(() => {
+        const checkAuthenticate = async () => {
+            if (user === null || !isAuthenticated) {
+                const userData = await fetchUser();
+                if (userData) {
+                    dispatch(setLogin(userData));
+                }
+                // else {
+                //     dispatch(setLogout());
+                //     navigate('/admin');
+                // }
+            }
         }
-    }
-    if (
-        isAuthenticated &&
-        user?.role !== 'admin' &&
-        location.pathname.includes('/admin')) {
-        return <Navigate to={'/notFound'} />
-    }
-    if (
-        isAuthenticated &&
-        user?.role === 'admin' &&
-        location.pathname.includes('/')) {
-        return <Navigate to={'/admin/home'} />
-    }
-    return <> {(children)} </>
+        checkAuthenticate();
+
+    }, [dispatch, navigate, isAuthenticated, user]);
+    return children
 }
 export default AuthMiddleware

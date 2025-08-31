@@ -1,12 +1,18 @@
 const pool = require('../config/database');
 const bcrypt = require('bcrypt');
+const {
+    BadRequestError,
+    ConFlictRequestError,
+    UnauthorizedRequestError,
+    NotFoundRequestError
+} = require('../middleware/error.respone')
 const store = async (name, email, password, phone, gender, avatar, role = []) => {
     if (!role || role.length === 0 || !Array.isArray(role)) {
-        throw new Error("Role phải là một mảng và không được rỗng.");
+        throw new BadRequestError("Role phải là một mảng và không được rỗng.");
     }
     const [checkRole] = await pool.promise().query('SELECT id FROM roles WHERE id IN (?)', [role]);
     if (checkRole.length !== role.length) {
-        throw new Error("Một hoặc nhiều roles không tồn tại hoặc không hợp lệ.");
+        throw new BadRequestError("Một hoặc nhiều roles không tồn tại hoặc không hợp lệ.");
     }
     const [rows] = await pool.promise().query('SELECT email,phone FROM users WHERE email = ? OR phone = ?'
         , [email, phone]);
@@ -14,9 +20,9 @@ const store = async (name, email, password, phone, gender, avatar, role = []) =>
     if (rows.length > 0) {
         const existingUser = rows[0];
         if (existingUser.email === email) {
-            throw new Error('Email đã tồn tại.');
+            throw new ConFlictRequestError('Email đã tồn tại.');
         } else {
-            throw new Error('Số điện thoại đã tồn tại.');
+            throw new ConFlictRequestError('Số điện thoại đã tồn tại.');
         }
     }
     const hash = await bcrypt.hash(password, 10);
@@ -28,17 +34,28 @@ const store = async (name, email, password, phone, gender, avatar, role = []) =>
     await pool.promise().query('INSERT INTO users_has_roles(user_id, role_id) VALUES ?', [userRoles])
 }
 const edit = async (id, name, email, phone, gender, role = []) => {
-    if (!role || role.length === 0 || Array.isArray(role)) {
-
+    const [userRows] = await pool.promise().query(
+        'SELECT id FROM users WHERE id = ?', [id]
+    );
+    if (!userRows) {
+        throw new NotFoundRequestError('Người dùng không tồn tại.')
     }
-    const [checkRole] = await pool.promise().query('SELECT id FROM roles WHERE id IN (?)', [role]);
-    if (checkRole.length !== role.length) {
-        throw new Error("Một hoặc nhiều roles không tồn tại hoặc không hợp lệ.");
-    }
-    const ff = await pool.promise().query()
+    if (role.length > 0 && Array.isArray(role)) {
+        const [checkRole] = await pool.promise().query('SELECT id FROM roles WHERE id IN (?)', [role]);
+        if (checkRole.length !== role.length) {
+            throw new BadRequestError("Một hoặc nhiều roles không tồn tại hoặc không hợp lệ.");
+        }
+        await pool.promise().query(
+            'DELETE FROM users_has_roles WHERE id = ?', [id]
+        );
+        const newRoles = checkRole.map(p => [id, p.id]);
+        await pool.promise().query('INSERT INTO users_has_roles( user_id,role_id ) VALUES ?',[newRoles])
+    };
     const conn = 'UPDATE users SET ? WHERE id = ?';
-    const values = { name, email, phone, gender };
-    await pool.promise().query(conn, [values, id]);
+    const values = { name, email, phone, gender,updated_at: new Date() };
+    await pool.promise().query(conn, [values,id]);
+    return { id, name, email, phone, gender };
+
 }
 const uploadAvatar = async (id, avatar) => {
     const conn = 'UPDATE users SET avatar = ? WHERE id = ?';
@@ -49,7 +66,7 @@ const getProfile = async (id) => {
         'SELECT avatar,name,email,phone,gender,status FROM users WHERE id = ?', [id]
     );
     if (rows.length === 0) {
-        return null;
+        throw new NotFoundRequestError('Người dùng không tồn tại.')
     }
     return rows[0]
 }
@@ -64,7 +81,7 @@ const getProfile = async (id) => {
 // const extractPublic = async () => {
 //     const parts = urlencoded.
 // }
-const getMany = async (page = 1, limit = 10, keyword = '', filter = '') => {
+const listUsers = async (page = 1, limit = 10, keyword = '', filter = '') => {
     const offset = (page - 1) * limit;
     let whereConditions = [];
     let queryParams = [];
@@ -104,19 +121,21 @@ const getMany = async (page = 1, limit = 10, keyword = '', filter = '') => {
     }
 }
 const deleted = async (id) => {
-    const conn = 'UPDATE users SET deleted_at = CURRENT_TIMESTAMP, status = ? WHERE id = ?';
-    await pool.promise().query(conn, [0, id])
+    const conn = 'UPDATE users SET deleted_at = CURRENT_TIMESTAMP, status = 0 WHERE id = ?';
+    await pool.promise().query(conn, [id]);
+    return {id}
 }
 const trash = async (id) => {
     const conn = 'DELETE FROM users WHERE id = ?'
-    await pool.promise().query(conn, [id])
+    await pool.promise().query(conn, [id]);
+    return {id};
 }
 module.exports = {
     store,
     edit,
     uploadAvatar,
     getProfile,
-    getMany,
+    listUsers,
     deleted,
     trash,
 }

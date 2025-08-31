@@ -1,11 +1,12 @@
-import requestApi from '@/helper/axios';
+import requestApi from '@/config/axios';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'
-import { setUser } from '@/redux/slice/authSlice';
+// import { setUser } from '@/redux/slice/authSlice';
 import { useForm } from 'react-hook-form';
 import { setMessage } from '@/redux/slice/toastSlice';
-const Login = () => {
+import './Register.css'
+const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -17,11 +18,11 @@ const Login = () => {
   }, [isAuthenticated, navigate])
   const onSubmit = async (data) => {
     try {
-      const response = await requestApi("/auth/login", "POST", data);
+      const response = await requestApi("/accout/login", "POST", data);
       const resData = response.data?.data;
-      localStorage.setItem('accessToken',response.data.token.accessToken)
+      localStorage.setItem('accessToken', response.data.token.accessToken)
       if (resData.success && resData.user) {
-        dispatch(setUser({ user: resData.user }));
+        // dispatch(setUser({ user: resData.user }));
         dispatch(setMessage({ type: 'success', message: 'Đăng nhập thành công.' }));
         navigate('/');
       } else {
@@ -32,14 +33,19 @@ const Login = () => {
     }
   }
   return (
-    <div className='max-w-md mx-auto bg-white p-8 rounded-lg'>
-      <div className='text-center text-sky-600 font-bold mb-6'>Đăng nhập</div>
+    <>
+      <div className='login-header'>
+        <h3 className='login-header__title'>Đăng nhập</h3>
+        <p className='login-header__subtitle'>Nếu bạn chưa có tài khoản,
+          <Link to={'account/register'} className='text-[#f1c40f]'> đăng ký ngay</Link>
+        </p>
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className='flex flex-col mb-4'>
-          <label className='text-lg font-bold mb-2 text-gray-600'>Email</label>
+        <div className='form-field'>
+          <label className='form-field__label'>Email</label>
           <input
             type='email'
-            className='p-2 border rounded-sm border-gray-300'
+            className='form-field__input'
             name='email'
             placeholder='Nhập email'
             {...register('email', {
@@ -50,41 +56,36 @@ const Login = () => {
               }
             })}
           />
-          {errors.email && <p className='font-medium' style={{ color: 'red' }}>
+          {errors.email && <p className='' style={{ color: 'red' }}>
             {errors.email.message}
           </p>}
         </div>
-        <div className='flex flex-col mb-4'>
-          <label className='text-lg font-bold mb-2 text-gray-600'>Mật khẩu</label>
+        <div className='form-field'>
+          <label className='form-field__label'>Mật khẩu</label>
           <input
             type='password'
-            className='p-2 border rounded-sm border-gray-300'
+            className='form-field__input'
             name='password'
             placeholder='Nhập mật khẩu'
             {...register('password', {
               required: 'Vui lòng nhập mật khẩu'
             })}
           />
-          {errors.password && <p className='font-medium' style={{ color: 'red' }}>{errors.password.message}</p>}
+          {errors.password && <p className='form-field__error' style={{ color: 'red' }}>{errors.password.message}</p>}
         </div>
-        <div className='flex justify-between mb-4'>
-          <span> <input type='checkbox' /> Ghi nhớ mật khẩu</span>
-          <Link>Quên mật khẩu?</Link>
+        <div className='form-footer'>
+          <button
+            type='submit'
+            className='submit-btn'>
+            Đăng nhập
+          </button>
+          <div className='forgot-password__link'>
+            <Link to={'auth/forgot-password'}>Quên mật khẩu?</Link>
+          </div>
         </div>
-        <button
-          type='submit'
-          className='w-full font-medium bg-sky-500 hover:bg-sky-600 rounded px-4 py-2 mb-2'>
-          Đăng nhập
-        </button>
       </form>
-      <div className='text-center'>
-        <p className='text-gray-600'>Chưa có tài khoản?
-          <Link to={'/auth/register'} className='text-sky-400'> Đăng ký ngay
-          </Link>
-        </p>
-      </div>
-    </div>
+    </>
   )
 }
 
-export default Login
+export default Register

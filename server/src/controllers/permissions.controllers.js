@@ -1,16 +1,34 @@
+const { CREATED, OK } = require('../middleware/success.response');
 const permissionService = require('../services/permissions.service');
 const store = async (req, res) => {
-    try {
-        const { name, guard_name, description } = req.body;
-        await permissionService.store(name, guard_name, description);
-        return res.status(201).json({ message: 'Tạo quyền thành công.' });
-    } catch (err) {
-        return res.status(500).json({ error: 'Lỗi hệ thống.' });
-    }
+    const { name,guard_name, description } = req.body
+    new CREATED({
+        message: 'Tạo quyền thành công.',
+        metaData: await permissionService.store(name,guard_name, description)
+    }).send(res)
 }
-const edit = async () => {
-
+const edit = async (req, res) => {
+    const { name,guard_name, description } = req.body;
+    new OK({
+        message:'Cập nhật quyền thành công.',
+        metaData:await permissionService.edit(req.params.id,name,guard_name,description)
+    }).send(res)
+}
+const listPermissions = async (req, res) => {
+    const { page = 1, limit = 10, keyword = '' } = req.query;
+    new OK({
+        metaData: await permissionService.listPermissions(parseInt(page),parseInt(limit),keyword)
+    }).send(res)
+}
+const trash = async (req, res) => {
+    new OK({
+        message:'Xóa quyền thành công.',
+        metaData: await permissionService.trash(req.params.id)
+    }).send(res)
 }
 module.exports = {
-    store
+    store,
+    trash,
+    edit,
+    listPermissions
 }

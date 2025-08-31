@@ -94,24 +94,11 @@ PRIMARY KEY (category_id,post_id),
 FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE,
 FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
 )`
-const tags = `
-CREATE TABLE IF NOT EXISTS tags (
-id INT UNSIGNED PRIMARY KEY NOT NULL,
-name VARCHAR(255) NOT NULL,
-slug VARCHAR(255) NOT NULL,
-description NVARCHAR(255),
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-)`
-const posts_has_tags = `
-CREATE TABLE IF NOT EXISTS posts_has_tags(
-post_id INT UNSIGNED NOT NULL,
-tag_id INT UNSIGNED NOT NULL,
-PRIMARY KEY (tag_id,post_id),
-FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE,
-FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
-)`
-pool.query(posts_has_tags, (err) => {
+const fixCate = `
+ALTER TABLE category
+MODIFY COLUMN slug VARCHAR(255) NOT NULL
+`
+pool.query(fixCate, (err) => {
     if (err) throw err;
     console.log('add data success')
 });

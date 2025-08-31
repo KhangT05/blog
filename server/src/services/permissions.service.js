@@ -1,20 +1,27 @@
 const pool = require('../config/database');
+const { BadRequestError } = require('../middleware/error.respone');
 const store = async (name, guard_name, description) => {
     const checkPermissions = 'SELECT name FROM permissions WHERE name = ?';
     const [rows] = await pool.promise().query(checkPermissions, [name]);
     if (rows.length > 0) {
-        throw new Error(`Quyền với tên "${name}" đã tồn tại.`);
+        throw new BadRequestError(`Quyền với tên "${name}" đã tồn tại.`);
     }
     const conn = 'INSERT INTO permissions SET ?';
     const permissionData = { name, guard_name, description: description || null };
-    await pool.promise().query(conn, permissionData);
+    const [result] = await pool.promise().query(conn, permissionData);
+    return {
+        id: result.insertId,
+        name,
+        guard_name,
+        description
+    }
 }
 const edit = async (id, name, guard_name, description) => {
     const [currentRows] = await pool.promise().query(
         'SELECT id,name,guard_name,description FROM permissions WHERE id = ?', [id]
     )
     if (!currentRows || currentRows.length === 0) {
-        throw new Error(`Permission with id ${id} not found.`);
+        throw new BadRequestError(`Permission with id ${id} not found.`);
     }
     const current = currentRows[0];
     if (name && name !== current.name) {
@@ -22,7 +29,7 @@ const edit = async (id, name, guard_name, description) => {
             'SELECT name FROM permissions WHERE name = ? AND id != ?',
             [name, id]);
         if (nameCheck.length > 0) {
-            throw new Error(`Quyền với tên "${name}" đã tồn tại.`);
+            throw new BadRequestError(`Quyền với tên "${name}" đã tồn tại.`);
         }
     }
     const updateData = {
@@ -31,9 +38,15 @@ const edit = async (id, name, guard_name, description) => {
         description: description || current.description,
         updated_at: new Date()
     }
-    await pool.promise().query('UPDATE permissions SET ? WHERE id = ?', [updateData, id])
+    await pool.promise().query('UPDATE permissions SET ? WHERE id = ?', [updateData, id]);
+    return {
+        id,
+        name: updateData.name,
+        guard_name: updateData.guard_name,
+        description: updateData.description
+    }
 }
-const getAllPermissions = async (page = 1, limit = 10, keyword) => {
+const listPermissions = async (page = 1, limit = 10, keyword) => {
     const offset = (page - 1) * limit;
     let whereConditions = [];
     let queryParams = [];
@@ -70,15 +83,16 @@ const trash = async (id) => {
         `SELECT id FROM permissions WHERE id = ?`, [id]
     );
     if (rows.length === 0) {
-        throw new Error(`Permission with id ${id} not found.`);
+        throw new BadRequestError(`Permission with id ${id} not found.`);
     }
     await pool.promise().query(
         `DELETE FROM permissions WHERE id = ?`, [id]
-    )
+    );
+    return { id }
 }
 module.exports = {
     store,
     edit,
-    getAllPermissions,
+    listPermissions,
     trash
 }

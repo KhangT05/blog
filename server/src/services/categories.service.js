@@ -1,11 +1,11 @@
 const pool = require('../config/database');
-const { BadRequestError } = require('../middleware/error.respone')
-const store = async (name, description) => {
+const { BadRequestError,ConFlictRequestError,NotFoundRequestError } = require('../middleware/error.respone');
+const store = async (name, description,slug) => {
     const [rows] = await pool.promise().query('SELECT name FROM category WHERE name = ?', [name]);
     if (rows.length > 0) {
-        throw new BadRequestError('Danh mục đã tồn tại.');
+        throw new ConFlictRequestError('Danh mục đã tồn tại.');
     }
-    const cateData = { name, description: description || null }
+    const cateData = { name, description: description || null,slug }
     const [result] = await pool.promise().query('INSERT INTO category SET ?', cateData);
     return {
         id: result.insertId,
@@ -14,29 +14,34 @@ const store = async (name, description) => {
     }
 }
 const edit = async (id,name, description) => {
-    const [cc] = await pool.promise().query(
+    const [rows] = await pool.promise().query(
         'SELECT id,name,description FROM category WHERE id = ?',[id]
     )
-    if(cc.length === 0 || !cc){
-        throw new BadRequestError('')
+    if(rows.length === 0 || !rows){
+        throw new NotFoundRequestError('Danh mục không tồn tại.')
     }
-    const aaa = cc[0];
-    if(name !== aaa.name){
-        const [kk] = await pool.promise().query(
+    const current = rows[0];
+    if(name !== current.name){
+        const [conflict] = await pool.promise().query(
             'SELECT name FROM category WHERE name = ? OR id != ?',[name,id]
         );
-        if(kk.length > 0){
-            throw new BadRequestError('')
+        if(conflict.length > 0){
+            throw new ConFlictRequestError('Tên danh mục đã được sử dụng.')
         }
     }
-    const ll = {
-        name: name || aaa.name,
-        description: description || aaa.description,
+    const updatedData  = {
+        name: name || current.name,
+        description: description || current.description,
         updated_at: new Date()
     }
     await pool.promise().query(
-        'UPDATE category SET ? WHERE id = ?',[ll,id]
-    )
+        'UPDATE category SET ? WHERE id = ?',[updatedData ,id]
+    );
+    return {
+        id,
+        name: updatedData.name,
+        description: updatedData.description
+    }
 }
 const listCategories = async () => {
     const [rows] = await pool.promise().query(
@@ -45,12 +50,14 @@ const listCategories = async () => {
     return rows
 }
 const trash = async (id) => {
-    const [rows] = await pool.promise().query(
+    await pool.promise().query(
         'DELETE FROM category WHERE id = ?',[id]
     )
+    return {id}
 }
 module.exports = {
     store,
+    edit,
     listCategories,
     trash
 }

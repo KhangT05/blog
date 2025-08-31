@@ -1,6 +1,11 @@
 const pool = require('../config/database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const {
+    BadRequestError,
+    ConFlictRequestError,
+    UnauthorizedRequestError
+} = require('../middleware/error.respone')
 const validateUser = async ({ email }) => {
     const query = 'SELECT id,name,email,password FROM users WHERE email = ?';
     const [rows] = await pool.promise().query(query, [email])
@@ -9,9 +14,7 @@ const validateUser = async ({ email }) => {
 const register = async ({ name, email, password }) => {
     const existingUser = await validateUser({ email });
     if (existingUser) {
-        const error = new Error('Email đã tồn tại');
-        error.status = 400;
-        throw error;
+        throw new ConFlictRequestError('Email đã tồn tại');
     }
     const hash = await bcrypt.hash(password, 10);
     const conn = 'INSERT INTO users SET ?';
@@ -24,15 +27,11 @@ const register = async ({ name, email, password }) => {
 const login = async ({ email, password }) => {
     const user = await validateUser({ email });
     if (!user) {
-        const error = new Error('Email hoặc mật khẩu không đúng');
-        error.status = 401;
-        throw error;
+        throw new UnauthorizedRequestError('Email hoặc mật khẩu không đúng');
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-        const error = new Error('Email hoặc mật khẩu không đúng');
-        error.status = 401;
-        throw error;
+        throw new UnauthorizedRequestError('Email hoặc mật khẩu không đúng');
     }
     return {
         success: true,
@@ -50,7 +49,7 @@ const generateAccessToken = async (user) => {
         email: user.email
     }
     const accessToken = await jwt.sign(payload, process.env.ACCESS_TOKEN, {
-        expiresIn: '10m'
+        expiresIn: '15m'
     });
     return {
         accessToken,
@@ -81,16 +80,23 @@ const setAuthCookies = (res, tokens) => {
     });
 }
 const verifyToken = async (token) => {
-    const decoded = await jwt.verify(token, process.env.REFRESH_TOKEN);
-    return {
-        success: true,
-        userId: decoded.sub,
-        email:decoded.email
+    try {
+        const decoded = jwt.verify(token, process.env.REFRESH_TOKEN);
+        return {
+            success: true,
+            userId: decoded.sub,
+            email: decoded.email
+        };
+    } catch (error) {
+        throw new UnauthorizedRequestError('Refresh token không hợp lệ hoặc đã hết hạn.');
     }
 }
 const clearCookies = (res) => {
     res.clearCookie('refreshToken', { path: '/' })
 }
+// const authMe = async () => {
+
+// }
 module.exports = {
     validateUser,
     register,

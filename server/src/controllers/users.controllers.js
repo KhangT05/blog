@@ -1,92 +1,72 @@
 const userService = require('../services/users.services');
+const { CREATED, OK } = require('../middleware/success.response');
+const { BadRequestError } = require('../middleware/error.respone');
 const store = async (req, res) => {
-    try {
-        const { name, email, password, phone, gender } = req.body;
-        const avatar = req.file;
-        if (!avatar) {
-            return res.status(400).json({ error: 'Vui lòng chọn ảnh đại diện.' });
-        }
-        await userService.store(name, email, password, phone, gender, avatar.path);
-        return res.status(201).json({ message: 'Tạo người dùng thành công.' });
-    } catch (err) {
-        return res.status(500).json({ error: 'Lỗi server.' });
+    const { name, email, password, phone, gender, role } = req.body;
+    const avatar = req.file;
+    if (!avatar) {
+        throw new BadRequestError('Vui lòng chọn ảnh đại diện.')
     }
+    new CREATED({
+        message: 'Tạo người dùng thành công.',
+        metaData: await userService.store(name, email, password, phone, gender, role, avatar.path)
+    }).send(res)
 };
 const getProfile = async (req, res) => {
-    try {
-        const user = await userService.getProfile(req.params.id);
-        if (!user) {
-            return res.status(404).json({ error: 'Người dùng không tồn tại.' });
-        }
-        console.log(req.user)
-        return res.status(200).json({ user });
-    } catch (error) {
-        return res.status(500).json({ error: 'Lỗi server.' });
-    }
+    new OK({
+        message: 'Lấy thông tin người dùng thành công.',
+        metaData: await userService.getProfile(req.params.id || req.user.sub)
+    }).send(res)
 }
 const uploadAvatar = async (req, res) => {
-    try {
-        const avatar = req.file;
-        if (!avatar) {
-            return res.status(400).json({ error: 'Vui lòng chọn một ảnh để upload.' });
-        }
-        await userService.uploadAvatar(req.user.sub, avatar.path);
-        return res.status(200).json({
-            message: 'Upload avatar thành công.',
-            avatarUrl: avatar.path
-        });
-    } catch (error) {
-        return res.status(500).json({ error: 'Lỗi server.' });
+    const avatar = req.file;
+    if (!avatar) {
+        throw new BadRequestError('Vui lòng chọn ảnh đại diện.')
     }
+    await userService.uploadAvatar(req.user.sub, avatar.path);
+    new OK({
+        message: 'Upload avatar thành công.',
+        metaData: { avatarUrl: avatar.path }
+    }).send(res)
 }
 const editProfile = async (req, res) => {
-    try {
-        const { name, email, phone, gender } = req.body;
-        await userService.edit(req.user.sub, name, email, phone, gender);
-        return res.status(200).json({ message: 'Cập nhật hồ sơ thành công.' });
-    } catch (error) {
-        return res.status(500).json({ error: error.message || 'Lỗi server.' });
-    }
+    const { name, email, phone, gender, role } = req.body;
+    new OK({
+        message: 'Cập nhật hồ sơ thành công.',
+        metaData: await userService.edit(req.user.sub, name, email, phone, gender, role)
+    }).send(res)
 }
-const getAllUsers = async (req, res) => {
-    try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
-        const keyword = req.query.keyword || '';
-        const filter = req.query.filter || '';
-        const users = await userService.getMany(page,limit,keyword,filter);
-        return res.status(200).json({
-            message: keyword ? `Tìm thấy kết quả cho "${keyword}"` : 'Lấy dữ liệu thành công',
-            ...users
-        });
-    } catch (error) {
-        return res.status(500).json({ error: 'Lỗi server.' });
-    }
+const listUsers = async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const keyword = req.query.keyword || '';
+    const filter = req.query.filter || '';
+    const result = await userService.listUsers(page, limit, keyword, filter);
+    new OK({
+        message: '',
+        metaData: result
+    })
 }
 const deletedU = async (req, res) => {
-    try {
-        const id = req.params.id;
-        await userService.deleted(id);
-        return res.status(200).json({ message: 'Xoá mềm người dùng thành công.' });
-    } catch (error) {
-        return res.status(500).json({ error: 'Lỗi server.' });
-    }
+    const id = req.params.id;
+    new OK({
+        message: 'Xoá mềm người dùng thành công.',
+        metaData: await userService.deleted(id)
+    })
 }
 const trash = async (req, res) => {
-    try {
-        const id = req.params.id;
-        await userService.trash(id);
-        return res.status(200).json({ message: 'Xoá người dùng hoàn toàn thành công.' });
-    } catch (error) {
-        return res.status(500).json({ error: 'Lỗi server.' });
-    }
-};
+    const id = req.params.id;
+    new OK({
+        message: 'Xoá người dùng hoàn toàn thành công.',
+        metaData: await userService.trash(id)
+    })
+}
 module.exports = {
     store,
     getProfile,
     uploadAvatar,
     editProfile,
-    getAllUsers,
+    listUsers,
     deletedU,
     trash
 };
