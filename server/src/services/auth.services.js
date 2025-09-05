@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken');
 const {
     BadRequestError,
     ConFlictRequestError,
-    UnauthorizedRequestError
+    UnauthorizedRequestError,
+    NotFoundRequestError
 } = require('../middleware/error.respone')
 const validateUser = async ({ email }) => {
     const query = 'SELECT id,name,email,password FROM users WHERE email = ?';
@@ -27,11 +28,11 @@ const register = async ({ name, email, password }) => {
 const login = async ({ email, password }) => {
     const user = await validateUser({ email });
     if (!user) {
-        throw new UnauthorizedRequestError('Email hoặc mật khẩu không đúng');
+        throw new NotFoundRequestError('Email này không tồn tại');
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-        throw new UnauthorizedRequestError('Email hoặc mật khẩu không đúng');
+        throw new UnauthorizedRequestError('Mật khẩu không đúng');
     }
     return {
         success: true,
@@ -92,11 +93,9 @@ const verifyToken = async (token) => {
     }
 }
 const clearCookies = (res) => {
-    res.clearCookie('refreshToken', { path: '/' })
+    res.clearCookie('accessToken', { path: '/' });
+    res.clearCookie('refreshToken', { path: '/' });
 }
-// const authMe = async () => {
-
-// }
 module.exports = {
     validateUser,
     register,

@@ -13,12 +13,10 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 const port = process.env.PORT || 5000;
-require('./src/config/database')
 const initRouter = require('./src/router/index');
 const errorHandler = require('./src/middleware/auth.middleware');
 initRouter(app);
 app.use(errorHandler.errorHandler);
-
 app.listen(port, () => {
     console.log(`Server running with http://localhost:${port}`)
-})
+});

@@ -8,21 +8,9 @@ const api = axios.create({
         "Content-Type": "application/json"
     }
 });
-api.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('accessToken');
-        if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`;
-        }
-        return config
-    },
-    (error) => {
-        return Promise.reject(error)
-    }
-)
 const refreshToken = async () => {
     try {
-        const response = await axios.post(`${baseUrl}/auth/refresh`, {}, {
+        const response = await axios.post(`/auth/refresh`, {}, {
             withCredentials: true
         });
         return response.data.accessToken
@@ -31,6 +19,18 @@ const refreshToken = async () => {
         throw new Error('Không thể khởi tạo lại access token')
     }
 }
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`
+        }
+        return config
+    },
+    (error) => {
+        return Promise.reject(error)
+    }
+)
 api.interceptors.response.use(
     response => {
         return response

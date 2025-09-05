@@ -1,16 +1,19 @@
-.login-header {
+.register-header {
     text-align: center;
     margin-bottom: 30px;
 }
-.login-header__title {
+
+.register-header__title {
     font-size: 28px;
     font-weight: 600;
     color: #333;
 }
-.login-header__subtitle {
+
+.register-header__subtitle {
     color: #aaa;
     font-size: 16px;
 }
+
 .form-field {
     margin-bottom: 15px;
 }
@@ -22,41 +25,44 @@
     color: #333;
     font-size: 14px;
 }
+
 .form-field__input {
-    width: calc(100% - 40px);
+    width: 100%;
     padding: 8px 12px;
     border: 2px solid #e1e5e9;
     border-radius: 8px;
     font-size: 16px;
     background-color: #fff;
 }
+
 .form-field__input::placeholder {
     color: #999;
 }
+
 .form-field__error {
     font-size: 12px;
     color: #e74c3c;
     margin-top: 4px;
-    margin-bottom: 0;
 }
-.forgot-password {
-    margin-bottom: 24px;
+
+.register-footer {
     text-align: center;
 }
-.forgot-password__link {
-    color: #535D8E;
-    font-size: 14px;
-}
-.forgot-password__link:hover {
-    color: #667eea;
-}
+
 .submit-btn {
-    width: calc(100%-30px); 
+    width: 100%;
     padding: 14px 20px;
+    background-color: #c2bfb5;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    border: none;
+}
+
+.submit-btn:hover {
+    box-shadow: 0 4px 12px rgba(83, 93, 142, 0.3);
+    background-color: #667eea;
+    color: #fff;
 }

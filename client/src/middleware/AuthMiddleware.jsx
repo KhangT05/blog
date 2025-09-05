@@ -14,10 +14,10 @@ function AuthMiddleware({ children }) {
                 if (userData) {
                     dispatch(setLogin(userData));
                 }
-                // else {
-                //     dispatch(setLogout());
-                //     navigate('/admin');
-                // }
+                else {
+                    dispatch(setLogout());
+                    navigate('/admin');
+                }
             }
         }
         checkAuthenticate();

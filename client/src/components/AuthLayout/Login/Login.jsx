@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'
 import { setLogin } from '@/redux/slice/authSlice';
 import { useForm } from 'react-hook-form';
-import { setMessage } from '@/redux/slice/toastSlice';
-import './Login.css'
 import { login } from '@/services/AuthServices';
+import './Login.css'
+import { handleAxiosError } from '@/helper/axiosHelper';
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -16,15 +16,10 @@ const Login = () => {
     try {
       const auth = await login(data);
       if (auth) {
-        dispatch(setMessage({
-          type: 'success',
-          message: 'Đăng nhập thành công.'
-        }));
         dispatch(setLogin(auth));
-        auth && navigate('/dashboard')
+        auth && navigate('/danh-sach')
       }
     } catch (error) {
-
     } finally {
       setIsLoading(false);
     }
@@ -34,12 +29,11 @@ const Login = () => {
       <div className='login-header'>
         <h3 className='login-header__title'>Đăng nhập</h3>
         <p className='login-header__subtitle'>Nếu bạn chưa có tài khoản,
-          <Link to={'/'} className='text-[#0e0d0d] font-semibold'>đăng ký ngay</Link>
+          <Link to={'/auth/register'} className='text-[#0e0d0d] font-semibold'>đăng ký ngay</Link>
         </p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className='form-field'>
-          <label className='form-field__label'>Email</label>
           <input
             type='email'
             className='form-field__input'
@@ -53,12 +47,11 @@ const Login = () => {
               }
             })}
           />
-          {errors.email && <p className='' style={{ color: 'red' }}>
+          {errors.email && <p className='form-field__error' style={{ color: 'red' }}>
             {errors.email.message}
           </p>}
         </div>
         <div className='form-field'>
-          <label className='form-field__label'>Mật khẩu</label>
           <input
             type='password'
             className='form-field__input'
@@ -76,9 +69,6 @@ const Login = () => {
             className='submit-btn'>
             {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
           </button>
-          <div className='forgot-password__link'>
-            <Link to={'auth/forgot-password'}>Quên mật khẩu?</Link>
-          </div>
         </div>
       </form>
     </>

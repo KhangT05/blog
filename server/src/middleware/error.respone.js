@@ -1,21 +1,25 @@
 const StatusCode = {
     BAD_REQUEST: 400,
-    UNAUTHORIZED:401,
-    FORBIDDEN:403,
-    NOT_FOUND:404,
+    UNAUTHORIZED: 401,
+    FORBIDDEN: 403,
+    NOT_FOUND: 404,
     CONFLICT: 409
 }
 const ReasonStatusCode = {
     BAD_REQUEST: 'Bad request error',
-    UNAUTHORIZED:'Unauthorized error',
-    FORBIDDEN:'Forbidden error',
-    NOT_FOUND:'Not found error',
+    UNAUTHORIZED: 'Unauthorized error',
+    FORBIDDEN: 'Forbidden error',
+    NOT_FOUND: 'Not found error',
     CONFLICT: 'Conflict error'
 }
-
+// const TypeError = {
+//     ERROR: 'error',
+//     WARNING: 'warning'
+// }
 class ErrorResponse extends Error {
-    constructor(message, status) {
+    constructor(message, status, type) {
         super(message);
+        this.type = type;
         this.status = status;
     }
 }
