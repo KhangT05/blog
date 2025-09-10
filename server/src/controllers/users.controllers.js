@@ -7,16 +7,18 @@ const store = async (req, res) => {
     if (!avatar) {
         throw new BadRequestError('Vui lòng chọn ảnh đại diện.')
     }
-    new CREATED({
-        message: 'Tạo người dùng thành công.',
-        metaData: await userService.store(name, email, password, phone, gender, role, avatar.path)
-    }).send(res)
+    return CREATED(
+        res,
+        'Tạo người dùng thành công.',
+        await userService.store(name, email, password, phone, gender, role, avatar.path)
+    )
 };
 const getProfile = async (req, res) => {
-    new OK({
-        message: 'Lấy thông tin người dùng thành công.',
-        metaData: await userService.getProfile(req.params.id || req.user.sub)
-    }).send(res)
+    new OK(
+        res,
+        'Lấy thông tin người dùng thành công.',
+        await userService.getProfile(req.params.id || req.user.sub)
+    )
 }
 const uploadAvatar = async (req, res) => {
     const avatar = req.file;
@@ -24,17 +26,19 @@ const uploadAvatar = async (req, res) => {
         throw new BadRequestError('Vui lòng chọn ảnh đại diện.')
     }
     await userService.uploadAvatar(req.user.sub, avatar.path);
-    new OK({
-        message: 'Upload avatar thành công.',
-        metaData: { avatarUrl: avatar.path }
-    }).send(res)
+    return OK(
+        res,
+        'Upload avatar thành công.',
+        { avatarUrl: avatar.path }
+    )
 }
 const editProfile = async (req, res) => {
     const { name, email, phone, gender, role } = req.body;
-    new OK({
-        message: 'Cập nhật hồ sơ thành công.',
-        metaData: await userService.edit(req.user.sub, name, email, phone, gender, role)
-    }).send(res)
+    return OK(
+        res,
+        'Cập nhật hồ sơ thành công.',
+        await userService.edit(req.user.sub, name, email, phone, gender, role)
+    )
 }
 const listUsers = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
@@ -42,24 +46,28 @@ const listUsers = async (req, res) => {
     const keyword = req.query.keyword || '';
     const filter = req.query.filter || '';
     const result = await userService.listUsers(page, limit, keyword, filter);
-    new OK({
-        message: '',
-        metaData: result
-    })
+    return OK(
+        res,
+        'Users retrieved successfully',
+        {
+            data: result.data
+        }
+    )
 }
 const deletedU = async (req, res) => {
     const id = req.params.id;
-    new OK({
-        message: 'Xoá mềm người dùng thành công.',
-        metaData: await userService.deleted(id)
-    })
+    return OK(
+        res,
+        'Xoá mềm người dùng thành công.',
+        await userService.deleted(id)
+    )
 }
 const trash = async (req, res) => {
     const id = req.params.id;
-    new OK({
-        message: 'Xoá người dùng hoàn toàn thành công.',
-        metaData: await userService.trash(id)
-    })
+    new OK(
+        res,
+        'Xoá người dùng hoàn toàn thành công.',
+        await userService.trash(id))
 }
 module.exports = {
     store,

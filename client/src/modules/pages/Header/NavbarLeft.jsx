@@ -12,40 +12,42 @@ import {
 import { FaChevronCircleDown } from 'react-icons/fa'
 const NavbarLeft = () => {
   return (
-    <ul className='navbar-left'>
-      {
-        index.map(item => (
-          <li key={item.title} className='menu-item'>
-            {
-              item.children ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    {item.title}
-                    <FaChevronCircleDown />
-                    <DropdownMenuContent className={'dropdown-menu__content'}>                      {
+    <div className='navbar-left'>
+      <ul className='navbar-menu'>
+        {
+          index.map(item => (
+            <li key={item.title} className='menu-item'>
+              {
+                item.children ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="dropdown-menu">
+                      {item.title}
+                      <FaChevronCircleDown />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className={'dropdown-menu__content'}> {
                       item.children.map((sub, idx) => (
                         <React.Fragment key={sub.title}>
                           {idx !== 0 && <DropdownMenuSeparator />}
                           <DropdownMenuItem asChild>
                             <NavLink to={sub.path} className={'dropdown-item'}>
-                              <span>{sub.title}</span>
+                              {sub.title}
                             </NavLink>
                           </DropdownMenuItem>
                         </React.Fragment>
                       ))
                     }
                     </DropdownMenuContent>
-                  </DropdownMenuTrigger>
-                </DropdownMenu>
-              ) : (
-                <NavLink to={item.path}><span>{item.title}</span></NavLink>
-              )
-            }
-          </li>
-        ))
-      }
-    </ul>
+                  </DropdownMenu>
+                ) : (
+                  <NavLink to={item.path}>{item.title}</NavLink>
+                )
+              }
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   )
 }
 
-export default NavbarLeft;
+export default NavbarLeft;  

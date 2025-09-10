@@ -4,12 +4,12 @@ import { showToast } from '@/helper/myHelper';
 
 export const register = async (data) => {
     try {
-        const request = await api.post('/auth/register', {
+        const request = await api.post(`${baseUrl}/auth/refresh`, {
             name: data.name,
             email: data.email,
             password: data.password
         });
-        showToast('success','Đăng ký thành công')
+        showToast('success', 'Đăng ký thành công')
         return {
             user: request.data.user,
         }
@@ -50,6 +50,7 @@ export const fetchUser = async () => {
     } catch (error) {
         if (error.response?.status === 401 || error.response?.status === 403) {
             localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
         }
 
         return null;

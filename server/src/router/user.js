@@ -4,11 +4,11 @@ const userController = require('../controllers/users.controllers');
 const upload = require('../config/cloudiary');
 const { authenticateToken } = require('../middleware/auth.middleware');
 router.use(authenticateToken);
-router.post('/user/store', upload.single('avatar'), userController.store);
-router.get('/user/profile/:id', userController.getProfile);
+router.post('/users/store', upload.single('avatar'), userController.store);
+router.get('/users/profile/:id', userController.getProfile);
 router.put('/avatar', upload.single('avatar'), userController.uploadAvatar);
-router.get('/user', userController.listUsers);
-router.put('/user/edit/:id',userController.editProfile)
-router.put('/user/delete/:id',userController.deletedU);
-router.delete('/user/delete/:id',userController.trash);
+router.get('/users/list', userController.listUsers);
+router.put('/users/edit/:id', userController.editProfile)
+router.put('/users/delete/:id', userController.deletedU);
+router.delete('/users/delete/:id', userController.trash);
 module.exports = router 

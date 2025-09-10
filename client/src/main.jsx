@@ -8,62 +8,51 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 const queryClient = new QueryClient()
 
 
-
 import AuthMiddleware from '@/middleware/AuthMiddleware'
-import NotFound from '@/components/NotFound/NotFound'
-import Login from '@/components/AuthLayout/Login/Login'
-import Register from '@/components/AuthLayout/Register/Register'
-import AuthLayout from '@/components/AuthLayout/AuthLayout'
-import Layout from '@/pages/Layout/Layout'
+import NotFound from '@/modules/NotFound/NotFound'
+import Login from '@/modules/AuthLayout/Login/Login'
+import Register from '@/modules/AuthLayout/Register/Register'
+import Layout from '@/modules/pages/Layout/Layout'
 import NoAuthMiddleware from '@/middleware/NoAuthMiddleware'
-import AboutUs from '@/pages/AboutUs/AboutUs'
-import AdminLayout from '@/components/admin/AdminLayout'
-import Index from './components/admin/system/Index'
-
-
-
-
+import Sangtac from '@/modules/pages/SangTac/index'
+import AdminLayout from '@/modules/admin/AdminLayout'
+import Setting from '@/modules/admin/system/index'
+import Users from '@/modules/admin/users/index'
 
 import './index.css'
 
 const router = createBrowserRouter([
   {
-    path: '/auth',
-    element: <AuthLayout />,
-    children: [
-      {
-        path: 'login',
-        element: <Login />
-      },
-      {
-        path: 'register',
-        element: <Register />
-      }
-    ]
+    path: '/login', element: <Login />
   },
   {
-    path: '/danh-sach',
+    path: '/register', element: <Register />
+  },
+  {
+    path: '/',
     element:
       <AuthMiddleware>
         <Layout />
       </AuthMiddleware>,
     children:
       [
-        { path: 'aboutus', element: <AboutUs /> },
+        { path: '/sang-tac', element: <Sangtac /> },
         {
-          path: 'thao-luan', element: <Layout />,
+          path: '/thao-luan', element: <Layout />,
         },
-        { path: 'huong-dan-dang-truyen', element: <Layout /> }
+        { path: '/huong-dan-dang-truyen', element: <Layout /> }
       ]
   },
   {
     path: '/admin',
     element:
       // <NoAuthMiddleware>
-      <AdminLayout />,
+      <AdminLayout />
     // </NoAuthMiddleware>
+    ,
     children: [
-      { path: 'setting', element: <Index /> }
+      { path: 'setting', element: <Setting /> },
+      { path: 'user', element: <Users /> }
     ]
   },
   {

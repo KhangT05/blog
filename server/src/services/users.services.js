@@ -49,11 +49,11 @@ const edit = async (id, name, email, phone, gender, role = []) => {
             'DELETE FROM users_has_roles WHERE id = ?', [id]
         );
         const newRoles = checkRole.map(p => [id, p.id]);
-        await pool.promise().query('INSERT INTO users_has_roles( user_id,role_id ) VALUES ?',[newRoles])
+        await pool.promise().query('INSERT INTO users_has_roles( user_id,role_id ) VALUES ?', [newRoles])
     };
     const conn = 'UPDATE users SET ? WHERE id = ?';
-    const values = { name, email, phone, gender,updated_at: new Date() };
-    await pool.promise().query(conn, [values,id]);
+    const values = { name, email, phone, gender, updated_at: new Date() };
+    await pool.promise().query(conn, [values, id]);
     return { id, name, email, phone, gender };
 
 }
@@ -123,12 +123,12 @@ const listUsers = async (page = 1, limit = 10, keyword = '', filter = '') => {
 const deleted = async (id) => {
     const conn = 'UPDATE users SET deleted_at = CURRENT_TIMESTAMP, status = 0 WHERE id = ?';
     await pool.promise().query(conn, [id]);
-    return {id}
+    return { id }
 }
 const trash = async (id) => {
     const conn = 'DELETE FROM users WHERE id = ?'
     await pool.promise().query(conn, [id]);
-    return {id};
+    return { id };
 }
 module.exports = {
     store,

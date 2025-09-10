@@ -16,6 +16,9 @@ const Sidebar = () => {
                     <NavLink to={'/admin/setting'}>
                         Quản Lý Hệ Thống
                     </NavLink>
+                    <NavLink to={'/admin/user'}>
+                        Quản Lý Người Dùng
+                    </NavLink>
                 </ul>
             </div>
         </>

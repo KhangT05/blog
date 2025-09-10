@@ -17,7 +17,7 @@ function NoAuthMiddleware({ children }) {
                 const userData = await fetchUser();
                 if (userData !== null) {
                     dispatch(setLogin(userData));
-                    navigate('/danh-sach');
+                    navigate('/');
                 } else {
                     setcheckedAuth(true);
                 }
@@ -28,7 +28,7 @@ function NoAuthMiddleware({ children }) {
         if (!isAuthenticated || user === null) {
             checkAuthenticate();
         } else {
-            navigate('/danh-sach')
+            navigate('/')
         }
     }, [isAuthenticated, user, dispatch, navigate])
     return checkedAuth ? children : null
