@@ -17,13 +17,14 @@ import NoAuthMiddleware from '@/middleware/NoAuthMiddleware'
 import Sangtac from '@/modules/pages/SangTac/index'
 import AdminLayout from '@/modules/admin/AdminLayout'
 import Setting from '@/modules/admin/system/index'
-import Users from '@/modules/admin/users/index'
+import Users from '@/modules/admin/users/screen/index'
 
 import './index.css'
 
 const router = createBrowserRouter([
   {
-    path: '/login', element: <Login />
+    path: '/login', element:
+      <Login />
   },
   {
     path: '/register', element: <Register />
@@ -33,14 +34,13 @@ const router = createBrowserRouter([
     element:
       <AuthMiddleware>
         <Layout />
-      </AuthMiddleware>,
+      </AuthMiddleware>
+    ,
     children:
       [
         { path: '/sang-tac', element: <Sangtac /> },
-        {
-          path: '/thao-luan', element: <Layout />,
-        },
-        { path: '/huong-dan-dang-truyen', element: <Layout /> }
+        { path: '/thao-luan/huong-dan-dang-truyen', element: <Layout /> }
+
       ]
   },
   {
@@ -48,11 +48,12 @@ const router = createBrowserRouter([
     element:
       // <NoAuthMiddleware>
       <AdminLayout />
-    // </NoAuthMiddleware>
+    // </NoAuthMiddleware >
     ,
     children: [
-      { path: 'setting', element: <Setting /> },
-      { path: 'user', element: <Users /> }
+      { path: 'settings', element: <Setting /> },
+      { path: 'users/index', element: <Users /> },
+      { path: 'users/store', element: <Users /> }
     ]
   },
   {

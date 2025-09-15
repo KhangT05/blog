@@ -7,13 +7,16 @@ import {
     BreadcrumbSeparator
 } from '@/components/ui/breadcrumb';
 import { Link } from "react-router-dom";
-
 const Heading = ({ breadcrumb }) => {
     return (
-        <div className="header">
-            <div className="header-top">
-                <FiAlignJustify />
-                <h2>{breadcrumb.title}</h2>
+        <div>
+            <div className="pc-header">
+                <div className="pc-header__top">
+                    <button className="header-btn">
+                        <FiAlignJustify className="header-btn__icon" />
+                    </button>
+                    <h2>{breadcrumb.title}</h2>
+                </div>
             </div>
             <Breadcrumb>
                 <BreadcrumbList>

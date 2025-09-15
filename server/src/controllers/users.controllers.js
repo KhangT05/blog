@@ -43,15 +43,11 @@ const editProfile = async (req, res) => {
 const listUsers = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    const keyword = req.query.keyword || '';
-    const filter = req.query.filter || '';
-    const result = await userService.listUsers(page, limit, keyword, filter);
+    const result = await userService.listUsers(page, limit);
     return OK(
         res,
         'Users retrieved successfully',
-        {
-            data: result.data
-        }
+        result
     )
 }
 const deletedU = async (req, res) => {

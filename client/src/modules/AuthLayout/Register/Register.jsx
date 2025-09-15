@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form';
 import './Register.css'
 import { register as registerServices } from '@/services/AuthServices';
+import { AiTwotoneEye, AiTwotoneEyeInvisible } from 'react-icons/ai'
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
@@ -21,6 +22,10 @@ const Register = () => {
       setIsLoading(false)
     }
   }
+  const [isVisible, setIsVisible] = useState(false);
+  const toggle = () => {
+    setIsVisible(!isVisible)
+  }
   return (
     <>
       <div className='auth-layout'>
@@ -28,7 +33,9 @@ const Register = () => {
           <div className='register-header'>
             <h3 className='register-header__title'>Đăng ký</h3>
             <p className='register-header__subtitle'>Đã tồn tại tài khoản,
-              <Link to={'/login'} className='text-[#0e0d0d] font-semibold'> đăng nhập tại đây</Link>
+              <Link to={'/login'} className='text-[#0e0d0d] font-semibold hover:text-[#667eea]'>
+                đăng nhập tại đây
+              </Link>
             </p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -70,7 +77,7 @@ const Register = () => {
             </div>
             <div className='form-field'>
               <input
-                type='password'
+                type={!isVisible ? "password" : "text"}
                 className='form-field__input'
                 name='password'
                 placeholder='Nhập mật khẩu'
@@ -86,6 +93,9 @@ const Register = () => {
                   }
                 })}
               />
+              <span onClick={toggle} className='form-field__hide'>
+                {isVisible ? <AiTwotoneEye /> : <AiTwotoneEyeInvisible />}
+              </span>
               {errors.password &&
                 <p className='form-field__error' style={{ color: 'red' }}>{errors.password.message}</p>}
             </div>

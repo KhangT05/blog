@@ -5,7 +5,7 @@ const api = axios.create({
     withCredentials: true,
     headers: {
         "Accept": "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
     }
 });
 const refreshToken = async () => {
@@ -13,24 +13,12 @@ const refreshToken = async () => {
         const response = await axios.post(`/auth/refresh`, {}, {
             withCredentials: true
         });
-        return response.data.accessToken
+        return response.data.data.accessToken
     } catch (error) {
         localStorage.removeItem('accessToken');
         throw new Error('Không thể khởi tạo lại access token')
     }
 }
-api.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('accessToken');
-        if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`
-        }
-        return config
-    },
-    (error) => {
-        return Promise.reject(error)
-    }
-)
 api.interceptors.response.use(
     response => {
         return response

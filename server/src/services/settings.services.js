@@ -6,7 +6,8 @@ const {
 class settingServices {
     static async store(site_name, site_brand, site_email, site_phone, site_address, site_social) {
         const [checkRows] = await pool.promise().query(
-            'SELECT site_email,site_phone FROM settings WHERE site_email = ? OR site_phone = ?', [site_email, site_phone]
+            'SELECT site_email,site_phone FROM settings WHERE site_email = ? OR site_phone = ?',
+            [site_email, site_phone]
         );
         if (checkRows.length > 0) {
             if (checkRows[0].site_email) {
@@ -34,6 +35,8 @@ class settingServices {
         return {
             rows
         }
+    }
+    static edit = async (site_name, site_email, site_phone, site_address, site_social) => {
     }
 }
 module.exports = settingServices;

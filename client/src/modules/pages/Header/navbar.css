@@ -76,3 +76,8 @@
     position: absolute;
     right: 8px;
 }
+
+.pc-nav__logout:hover {
+    cursor: pointer;
+    color: #667eea;
+}

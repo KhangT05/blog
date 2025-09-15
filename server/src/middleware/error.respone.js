@@ -12,14 +12,10 @@ const ReasonStatusCode = {
     NOT_FOUND: 'Not found error',
     CONFLICT: 'Conflict error'
 }
-// const TypeError = {
-//     ERROR: 'error',
-//     WARNING: 'warning'
-// }
 class ErrorResponse extends Error {
-    constructor(message, status, type) {
+    constructor(message, status) {
         super(message);
-        this.type = type;
+        this.statusCode = status;
         this.status = status;
     }
 }

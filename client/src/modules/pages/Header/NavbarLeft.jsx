@@ -15,8 +15,8 @@ const NavbarLeft = () => {
     <div className='navbar-left'>
       <ul className='navbar-menu'>
         {
-          index.map(item => (
-            <li key={item.title} className='menu-item'>
+          index.map((item, idx) => (
+            <li key={idx} className='menu-item'>
               {
                 item.children ? (
                   <DropdownMenu>
@@ -25,9 +25,9 @@ const NavbarLeft = () => {
                       <FaChevronCircleDown />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className={'dropdown-menu__content'}> {
-                      item.children.map((sub, idx) => (
-                        <React.Fragment key={sub.title}>
-                          {idx !== 0 && <DropdownMenuSeparator />}
+                      item.children.map((sub, subIdx) => (
+                        <React.Fragment key={subIdx}>
+                          {subIdx !== 0 && <DropdownMenuSeparator />}
                           <DropdownMenuItem asChild>
                             <NavLink to={sub.path} className={'dropdown-item'}>
                               {sub.title}

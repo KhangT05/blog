@@ -16,6 +16,7 @@
 
 .form-field {
     margin-bottom: 15px;
+    position: relative;
 }
 
 .form-field__label {
@@ -28,11 +29,19 @@
 
 .form-field__input {
     width: calc(100% - 0px);
-    padding: 8px 12px;
+    padding: 10px 40px 10px 12px;
     border: 2px solid #e1e5e9;
     border-radius: 8px;
     font-size: 16px;
     background-color: #fff;
+}
+
+.form-field__hide {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
 }
 
 .form-field__input::placeholder {
@@ -44,20 +53,6 @@
     color: #e74c3c;
     margin-top: 4px;
     margin-bottom: 0;
-}
-
-.forgot-password {
-    margin-bottom: 24px;
-}
-
-.forgot-password__link {
-    color: #000000;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.forgot-password__link:hover {
-    color: #0022b8;
 }
 
 .login-footer {
@@ -74,8 +69,13 @@
     cursor: pointer;
     margin-bottom: 10px;
 }
-.submit-btn:hover{
+
+.submit-btn:hover {
     box-shadow: 0 4px 12px rgba(83, 93, 142, 0.3);
     background-color: #667eea;
     color: #fff;
+}
+
+.login-password__reset:hover {
+    color: #667eea;
 }

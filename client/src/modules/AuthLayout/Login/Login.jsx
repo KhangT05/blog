@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'
-import { setLogin } from '@/redux/slice/authSlice';
+import { AiTwotoneEye, AiTwotoneEyeInvisible } from 'react-icons/ai'
 import { useForm } from 'react-hook-form';
+import { setLogin } from '@/redux/slice/authSlice';
 import { login } from '@/services/AuthServices';
 import './Login.css'
-import { handleAxiosError } from '@/helper/axiosHelper';
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -15,14 +15,18 @@ const Login = () => {
     setIsLoading(true);
     try {
       const auth = await login(data);
-      if (auth) {
+      if (auth && auth.user) {
         dispatch(setLogin(auth));
-        auth && navigate('/')
+        navigate('/')
       }
     } catch (error) {
     } finally {
       setIsLoading(false);
     }
+  }
+  const [isVisible, setIsVisible] = useState(false);
+  const toggle = () => {
+    setIsVisible(!isVisible)
   }
   return (
     <>
@@ -31,7 +35,9 @@ const Login = () => {
           <div className='login-header'>
             <h3 className='login-header__title'>Đăng nhập</h3>
             <p className='login-header__subtitle'>Nếu bạn chưa có tài khoản,
-              <Link to={'/register'} className='text-[#0e0d0d] font-semibold'>đăng ký ngay</Link>
+              <Link to={'/register'} className='text-[#0e0d0d] font-semibold hover:text-[#667eea]'>
+                đăng ký ngay
+              </Link>
             </p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -55,7 +61,7 @@ const Login = () => {
             </div>
             <div className='form-field'>
               <input
-                type='password'
+                type={!isVisible ? 'password' : 'text'}
                 className='form-field__input'
                 name='password'
                 placeholder='Nhập mật khẩu'
@@ -63,6 +69,9 @@ const Login = () => {
                   required: 'Vui lòng nhập mật khẩu'
                 })}
               />
+              <span onClick={toggle} className='form-field__hide'>
+                {isVisible ? <AiTwotoneEye /> : <AiTwotoneEyeInvisible />}
+              </span>
               {errors.password && <p className='form-field__error' style={{ color: 'red' }}>{errors.password.message}</p>}
             </div>
             <div className='login-footer'>
@@ -71,6 +80,7 @@ const Login = () => {
                 className='submit-btn'>
                 {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
               </button>
+              <Link to={"/password/rest"} className='login-password__reset'>Quên mật khẩu?</Link>
             </div>
           </form>
         </div>

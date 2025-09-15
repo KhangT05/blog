@@ -1,10 +1,22 @@
-import { Input } from "@/components/ui/input"
 import { useState } from "react";
-import { FaSearch } from "react-icons/fa"
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "@/services/AuthServices";
+import { setLogout } from "@/redux/slice/authSlice";
+import { Input } from "@/components/ui/input";
 import { SlOptionsVertical } from "react-icons/sl";
-import { Link } from "react-router-dom";
 const NavbarRight = () => {
     const [isSearch, setIsSearch] = useState("");
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const handleLogout = async () => {
+        const auth = await logout();
+        console.log(auth)
+        if (auth) {
+            dispatch(setLogout(auth))
+            navigate('/login');
+        }
+    }
     return (
         <div className="navbar-right">
             <div className="navbar-right__item">
@@ -15,9 +27,9 @@ const NavbarRight = () => {
                 {/* <FaSearch className="navbar-right__icon" /> */}
             </div>
             <SlOptionsVertical />
-            <div>
-                <Link to={"/login"}>Đăng nhập</Link>
-            </div>
+            <button onClick={handleLogout} className="pc-nav__logout">
+                Đăng xuất
+            </button>
         </div>
     )
 }

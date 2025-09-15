@@ -1,0 +1,23 @@
+const pool = require('../config/database')
+const posts = `
+CREATE TABLE IF NOT EXISTS posts(
+id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+user_id INT UNSIGNED UNIQUE NOT NULL,
+title NVARCHAR(255) NOT NULL,
+slug VARCHAR(255) NOT NULL,
+content LONGTEXT NOT NULL,
+excerpt VARCHAR(100),
+thumbnail VARCHAR(255),
+publish TINYINT(1) NOT NULL DEFAULT 2,
+published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+meta_title VARCHAR(255),
+meta_description VARCHAR(255),
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)`
+pool.query(posts, (err) => {
+    if (err) throw err;
+    console.log('add data success')
+});

@@ -21,15 +21,15 @@ export const index = [
     },
     {
         title: 'Hướng dẫn',
-        path: '/thao-luan',
+        path: '/',
         children: [
             {
                 title: 'Đăng truyện',
-                path: '/huong-dan-dang-truyen'
+                path: '/thao-luan/huong-dan-dang-truyen'
             },
             {
                 title: 'Giới thiệu',
-                path: '/gioi-thieu-truyen-tranh'
+                path: '/thao-luan/gioi-thieu-truyen-tranh'
             },
             {
                 title: 'Góp ý - Báo lỗi',

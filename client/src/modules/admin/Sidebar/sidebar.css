@@ -1,18 +1,28 @@
 .nav-header {
-    max-width: 240px;
+    width: 280px;
     height: 100vh;
-    position: relative;
     background-color: #e6f2f2;
+    padding: 10px;
+    align-items: center;
     justify-content: space-between;
-    text-align: center;
-    flex-direction: column;
 }
 
 .nav-header__content {
     padding: 14px 20px;
-    font-weight: 400;
-    font-size: 14px;
+    font-weight: 700;
+    font-size: 16px;
     color: #5b6b79;
     cursor: pointer;
     font-family: "Inter var", sans-serif;
+}
+
+.nav-content__trigger {
+    margin-bottom: 10px;
+}
+
+.nav-content__coll {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
 }

@@ -1,7 +1,11 @@
-.pc-header {
+/* .pc-header {
     padding: 20px;
     background-color: bisque;
     display: flex;
-}
+} */
+.header-btn {}
 
-.header-content {}
+.header-btn__icon {
+    font-size: 30px;
+    margin: 5px;
+}

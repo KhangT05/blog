@@ -1,27 +1,57 @@
-import React from 'react'
-import { FiAlignJustify } from "react-icons/fi";
 import { NavLink } from 'react-router-dom';
+// SHADCN
+import {
+    Card,
+    CardAction,
+    CardContent,
+    CardDescription
+} from '@/components/ui/card'
+import {
+    Collapsible,
+    CollapsibleTrigger,
+    CollapsibleContent
+} from '@/components/ui/collapsible'
+// ICONS
+import { LuAlignCenter } from "react-icons/lu";
+import { RxDotFilled } from "react-icons/rx"
+import { index } from './settings';
 import './sidebar.css'
 const Sidebar = () => {
     return (
-        <>
-            <div className='nav-header'>
-                <div className='nav-header__img'>
-
-                </div>
-                <ul className='nav-header__content'>
-                    <NavLink to='/admin'>
-                        Trang chủ
-                    </NavLink>
-                    <NavLink to={'/admin/setting'}>
-                        Quản Lý Hệ Thống
-                    </NavLink>
-                    <NavLink to={'/admin/user'}>
-                        Quản Lý Người Dùng
-                    </NavLink>
+        <div className='nav-header'>
+            <Card className="">
+                <LuAlignCenter />
+                <ul>
+                    <li>a</li>
+                    <li>b</li>
+                    <li>c</li>
                 </ul>
-            </div>
-        </>
+            </Card>
+            <ul className='nav-header__content'>
+                {
+                    index.map((item, idx) => (
+                        <li key={idx}>
+                            <Collapsible>
+                                <CollapsibleTrigger className="nav-content__trigger">
+                                    {item.title}
+                                </CollapsibleTrigger>
+                                <ul>
+                                    {item.children.map((sub, subIdx) => (
+                                        <li key={subIdx}>
+                                            <CollapsibleContent>
+                                                <NavLink to={sub.path} className="nav-content__coll">
+                                                    <RxDotFilled />{sub.title}
+                                                </NavLink>
+                                            </CollapsibleContent>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </Collapsible>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
     )
 }
 

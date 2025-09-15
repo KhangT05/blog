@@ -7,7 +7,7 @@ import {
     PaginationNext
 } from '@/components/ui/pagination'
 
-const Pagiante = ({ links, pageChange }) => {
+const Paginate = ({ links, pageChange }) => {
     const activeLinks = links.findIndex((link) => link.index);
     const filterLinks = links.filter((_, index) => {
         return (index !== 0 && index !== index.length === 0) && (
@@ -20,7 +20,7 @@ const Pagiante = ({ links, pageChange }) => {
         <Pagination>
             <PaginationContent>
                 {
-                    activeLinks > 0 && (
+                    activeLinks > 1 && (
                         <PaginationItem>
                             <PaginationPrevious onClick={(e) => {
                                 e.preventDefault();
@@ -53,4 +53,4 @@ const Pagiante = ({ links, pageChange }) => {
         </Pagination>
     )
 }
-export default Pagiante
+export default Paginate

@@ -4,7 +4,7 @@ import { showToast } from '@/helper/myHelper';
 
 export const register = async (data) => {
     try {
-        const request = await api.post(`${baseUrl}/auth/refresh`, {
+        const request = await api.post(`/auth/register`, {
             name: data.name,
             email: data.email,
             password: data.password
@@ -24,14 +24,13 @@ export const login = async (payload) => {
             email: payload.email,
             password: payload.password
         });
-
-        if (response.data.token) {
-            localStorage.setItem('accessToken', response.data.token);
+        if (response.data.data.accessToken) {
+            localStorage.setItem('accessToken', response.data.data.accessToken);
         }
         showToast('success', 'Đăng nhập thành công.')
         return {
-            user: response.data.user,
-            token: response.data.token
+            user: response.data.data.user,
+            token: response.data.data.accessToken
         };
     } catch (error) {
         handleAxiosError(error)
@@ -42,17 +41,20 @@ export const login = async (payload) => {
 export const fetchUser = async () => {
     try {
         const response = await api.get('/auth/me');
-        if (response.data.user) {
-            return response.data.user;
-        } else {
-            return response.data;
+        return {
+            user: response.data.data.user
         }
     } catch (error) {
-        if (error.response?.status === 401 || error.response?.status === 403) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-        }
-
+        console.error("Lỗi trong fetchUser:", error);
         return null;
+    }
+}
+export const logout = async () => {
+    try {
+        const response = await api.post('/auth/logout');
+        showToast("Đăng xuất thành công", 'success')
+        return response
+    } catch (error) {
+        showToast("Đăng xuất thât bại", "error")
     }
 }

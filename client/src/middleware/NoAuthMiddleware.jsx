@@ -11,6 +11,12 @@ function NoAuthMiddleware({ children }) {
     const navigate = useNavigate();
     const { isAuthenticated, user } = useSelector(state => state.auth);
     const [checkedAuth, setcheckedAuth] = useState(false);
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+        dispatch(setLogout());
+        navigate('/login');
+        return;
+    }
     useEffect(() => {
         const checkAuthenticate = async () => {
             try {

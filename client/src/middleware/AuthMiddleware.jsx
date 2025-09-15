@@ -6,8 +6,14 @@ import { useNavigate } from "react-router-dom"
 function AuthMiddleware({ children }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isAuthenticated, user } = useSelector(state => state.auth);
+    const { user, isAuthenticated } = useSelector(state => state.auth);
     useEffect(() => {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            dispatch(setLogout());
+            navigate('/login');
+            return;
+        }
         const checkAuthenticate = async () => {
             if (user === null || !isAuthenticated) {
                 const userData = await fetchUser();
@@ -23,6 +29,6 @@ function AuthMiddleware({ children }) {
         checkAuthenticate();
 
     }, [dispatch, navigate, isAuthenticated, user]);
-    return children
+    return isAuthenticated && user ? children : null
 }
 export default AuthMiddleware

@@ -81,44 +81,18 @@ const getProfile = async (id) => {
 // const extractPublic = async () => {
 //     const parts = urlencoded.
 // }
-const listUsers = async (page = 1, limit = 10, keyword = '', filter = '') => {
+const listUsers = async (page = 1, limit = 20) => {
     const offset = (page - 1) * limit;
-    let whereConditions = [];
-    let queryParams = [];
-    let countParams = [];
-    if (keyword) {
-        const searchTerms = `%${keyword.trim()}%`;
-        whereConditions.push('(name LIKE ? OR phone LIKE ?)');
-        queryParams.push(searchTerms, searchTerms);
-        countParams.push(searchTerms, searchTerms);
-    }
-    if (filter.gender && typeof filter === 'string') {
-        whereConditions.push(`gender = ?`);
-        queryParams.push(filter.gender);
-        countParams.push(filter.gender)
-    }
-    let whereClause = '';
-    if (whereConditions.length > 0) {
-        whereClause = `WHERE ${whereConditions.join(' AND ')}`
-    }
-    const selectParams = [...queryParams, limit, offset]
     const selectQuery = `
-        SELECT id,avatar,name,email,phone,gender,status FROM users ${whereClause} LIMIT ? OFFSET ?
+        SELECT id,avatar,name,email,phone,gender,status FROM users ORDER BY id ASC LIMIT ? OFFSET ?
     `
-    const countQuery = `SELECT COUNT(id) as count FROM users ${whereClause}`;
-    const [rows] = await pool.promise().query(selectQuery, selectParams);
-    const [[{ count }]] = await pool.promise().query(countQuery, countParams)
+    const countQuery = `SELECT COUNT(id) as count FROM users`;
+    const [rows] = await pool.promise().query(selectQuery, [limit, offset]);
+    const [[{ count }]] = await pool.promise().query(countQuery);
     const lastPage = Math.ceil(count / limit);
     const nextPage = page < lastPage ? page + 1 : null;
     const prevPage = page > 1 ? page - 1 : null
-    return {
-        data: rows,
-        total: count,
-        currentPage: page,
-        lastPage,
-        nextPage,
-        prevPage,
-    }
+    return rows
 }
 const deleted = async (id) => {
     const conn = 'UPDATE users SET deleted_at = CURRENT_TIMESTAMP, status = 0 WHERE id = ?';
