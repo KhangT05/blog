@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from '@tanstack/react-query'
@@ -8,13 +8,13 @@ const useTable = ({ pagination, models }) => {
     const current = searchParams.get('page') ? parseInt(searchParams.get('page')) : '';
 
     const [isPage, setIsPage] = useState(current);
-    const queryString = `page=${isPage}`
     const { data, isLoading, isError, refetch } = useQuery({
-        queryKey: [models, queryString],
-        queryFn: () => pagination(queryString)
+        queryKey: [models, isPage],
+        queryFn: () => pagination(isPage)
     });
     const handlePageChange = (newPage) => {
         setIsPage(newPage)
+        setSearchParams({ page: newPage.toString() });
     };
 
     useEffect(() => {

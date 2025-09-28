@@ -1,9 +1,17 @@
-import api from '@/config/axios'
+import api from '../config/axios'
 
-const listUsers = async (queryString = {}) => {
+const pagination = async (queryString = {}) => {
     const response = await api.get('users/list', { queryString });
-    return response.data
+    return response.data.data
+}
+// const updateStatus = async (id) => {
+//     const response = await api.put()
+// }
+const destroy = async (id) => {
+    const response = await api.delete(`users/destroy/${id}`);
+    return response.data.data
 }
 export {
-    listUsers
-}   
+    pagination,
+    destroy
+}

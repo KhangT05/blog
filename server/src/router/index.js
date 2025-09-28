@@ -6,8 +6,8 @@ const initRouter = (app) => {
     app.use('/api/v1', [
         auth,
         user,
+        setting,
         category,
-        setting
     ]);
 }
 module.exports = initRouter

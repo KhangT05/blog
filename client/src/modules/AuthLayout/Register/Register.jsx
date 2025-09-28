@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form';
 import './Register.css'
 import { register as registerServices } from '@/services/AuthServices';
-import { AiTwotoneEye, AiTwotoneEyeInvisible } from 'react-icons/ai'
+import { Eye, EyeOff } from 'lucide-react';
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
@@ -94,7 +94,7 @@ const Register = () => {
                 })}
               />
               <span onClick={toggle} className='form-field__hide'>
-                {isVisible ? <AiTwotoneEye /> : <AiTwotoneEyeInvisible />}
+                {isVisible ? <Eye /> : <EyeOff />}
               </span>
               {errors.password &&
                 <p className='form-field__error' style={{ color: 'red' }}>{errors.password.message}</p>}

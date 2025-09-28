@@ -1,8 +1,8 @@
 import api from '@/config/axios';
 import { handleAxiosError } from '@/helper/axiosHelper';
-const listSetting = async () => {
+const pagination = async () => {
     const response = await api.get('/setting/list');
-    return response.data;
+    return response.data.data;
 };
 const store = async (data) => {
     try {
@@ -13,6 +13,6 @@ const store = async (data) => {
     }
 }
 export {
-    listSetting,
+    pagination,
     store
 }

@@ -14,7 +14,6 @@ const useFormSubmit = (submitFn, rejetch = null) => {
             setIsSuccess(true)
         },
         onError: (error) => {
-            console.log(error.response.data.message)
             showToast(error.response.data.message, 'error')
         }
     });

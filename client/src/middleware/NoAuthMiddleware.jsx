@@ -1,4 +1,4 @@
-import { setLogin } from "@/redux/slice/authSlice";
+import { setLogin, setLogout } from "@/redux/slice/authSlice";
 import { fetchUser } from "@/services/AuthServices";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
@@ -11,13 +11,13 @@ function NoAuthMiddleware({ children }) {
     const navigate = useNavigate();
     const { isAuthenticated, user } = useSelector(state => state.auth);
     const [checkedAuth, setcheckedAuth] = useState(false);
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-        dispatch(setLogout());
-        navigate('/login');
-        return;
-    }
     useEffect(() => {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            dispatch(setLogout());
+            navigate('/login');
+            return;
+        }
         const checkAuthenticate = async () => {
             try {
                 const userData = await fetchUser();

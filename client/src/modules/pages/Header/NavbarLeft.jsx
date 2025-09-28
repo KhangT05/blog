@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { FaChevronCircleDown } from 'react-icons/fa'
+import { ChevronDown } from 'lucide-react';
 const NavbarLeft = () => {
   return (
     <div className='navbar-left'>
@@ -22,7 +22,7 @@ const NavbarLeft = () => {
                   <DropdownMenu>
                     <DropdownMenuTrigger className="dropdown-menu">
                       {item.title}
-                      <FaChevronCircleDown />
+                      <ChevronDown />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className={'dropdown-menu__content'}> {
                       item.children.map((sub, subIdx) => (

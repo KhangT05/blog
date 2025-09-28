@@ -5,46 +5,47 @@ import {
     PaginationItem,
     PaginationLink,
     PaginationNext
-} from '@/components/ui/pagination'
+} from './ui/pagination'
 
-const Paginate = ({ links, pageChange }) => {
-    const activeLinks = links.findIndex((link) => link.index);
-    const filterLinks = links.filter((_, index) => {
-        return (index !== 0 && index !== index.length === 0) && (
-            index >= activeLinks - 3 && index <= activeLinks + 3)
-    });
-    const handlePageChange = (page) => {
-        pageChange(page)
+const Paginate = ({ pagination, pageChange }) => {
+    const { currentPage, totalPages } = pagination;
+    const generatePageNumber = () => {
+        const page = [];
+        const start = Math.max(1, currentPage - 2);
+        const end = Math.min(totalPages, currentPage + 2);
+        for (let i = start; i <= end; i++) {
+            page.push(i);
+        }
+        return page;
     }
+    const pageNum = generatePageNumber();
     return (
         <Pagination>
             <PaginationContent>
                 {
-                    activeLinks > 1 && (
+                    currentPage > 1 && (
                         <PaginationItem>
-                            <PaginationPrevious onClick={(e) => {
-                                e.preventDefault();
-                                handlePageChange(parseInt(links[activeLinks - 1].label))
+                            <PaginationPrevious onClick={() => {
+                                pageChange(currentPage - 1)
                             }} className="cursor-pointer" />
                         </PaginationItem>
                     )
                 }
                 {
-                    filterLinks.map((link, index) => {
-                        <PaginationItem key={index}>
-                            <PaginationLink onClick={(e) => {
-                                e.preventDefault();
-                                handlePageChange(parseInt(links[activeLinks]))
-                            }} className="cursor-pointer"> {link.label} </PaginationLink>
+                    pageNum.map((page) => (
+                        <PaginationItem key={page}>
+                            <PaginationLink onClick={() => {
+                                pageChange(page)
+                            }}
+                                isActive={page === currentPage} > {page} </PaginationLink>
                         </PaginationItem>
-                    })
+                    ))
                 }
                 {
-                    activeLinks < links.length - 1 && (
+                    currentPage < totalPages && (
                         <PaginationItem>
-                            <PaginationNext onClick={(e) => {
-                                e.preventDefault();
-                                handlePageChange(parseInt(links[activeLinks + 1].label))
+                            <PaginationNext onClick={() => {
+                                pageChange(currentPage + 1)
                             }} className="cursor-pointer" />
                         </PaginationItem>
                     )

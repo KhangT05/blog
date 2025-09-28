@@ -81,20 +81,28 @@ const getProfile = async (id) => {
 // const extractPublic = async () => {
 //     const parts = urlencoded.
 // }
-const listUsers = async (page = 1, limit = 20) => {
+const listUsers = async (page = 1, limit = 10) => {
     const offset = (page - 1) * limit;
     const selectQuery = `
-        SELECT id,avatar,name,email,phone,gender,status FROM users ORDER BY id ASC LIMIT ? OFFSET ?
+        SELECT id,name,email,status FROM users ORDER BY id ASC LIMIT ? OFFSET ?
     `
     const countQuery = `SELECT COUNT(id) as count FROM users`;
     const [rows] = await pool.promise().query(selectQuery, [limit, offset]);
     const [[{ count }]] = await pool.promise().query(countQuery);
-    const lastPage = Math.ceil(count / limit);
-    const nextPage = page < lastPage ? page + 1 : null;
-    const prevPage = page > 1 ? page - 1 : null
-    return rows
+    const totalPages = Math.ceil(count / limit);
+    const nextPage = page < totalPages ? page + 1 : null;
+    const prevPage = page > 1 ? page - 1 : null;
+    return {
+        users: rows,
+        pagination: {
+            totalPages,
+            currentPage: page,
+            nextPage,
+            prevPage
+        }
+    }
 }
-const deleted = async (id) => {
+const updateStatus = async (id) => {
     const conn = 'UPDATE users SET deleted_at = CURRENT_TIMESTAMP, status = 0 WHERE id = ?';
     await pool.promise().query(conn, [id]);
     return { id }
@@ -110,6 +118,6 @@ module.exports = {
     uploadAvatar,
     getProfile,
     listUsers,
-    deleted,
+    updateStatus,
     trash,
 }

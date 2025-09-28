@@ -25,15 +25,16 @@ class settingServices {
             message: 'Settings saved successfully',
         }
     }
-    static async listSetting() {
+    static async pagination() {
         const [rows] = await pool.promise().query(
-            'SELECT site_name, site_brand, site_email, site_phone, site_address, site_social FROM settings'
+            `SELECT site_name, site_brand, site_email, site_phone, site_address, site_social 
+            FROM settings`
         );
         if (rows.length === 0) {
             throw new NotFoundRequestError('Kết quả không tìm thấy!')
         }
         return {
-            rows
+            settings: rows
         }
     }
     static edit = async (site_name, site_email, site_phone, site_address, site_social) => {

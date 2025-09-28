@@ -16,10 +16,12 @@ const edit = async (req, res) => {
         metaData: await categoryServices.edit(req.params.id, name, description)
     }).send(res)
 }
-const listCategories = async (req, res) => {
-    new OK({
-        metaData: await categoryServices.listCategories()
-    }).send(res)
+const listCategories = async (req, res) => {    
+    return OK(
+        res,
+        '',
+        await categoryServices.listCategories()
+    )
 }
 const trash = async (req, res) => {
     new OK({

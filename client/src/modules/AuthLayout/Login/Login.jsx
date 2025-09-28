@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'
-import { AiTwotoneEye, AiTwotoneEyeInvisible } from 'react-icons/ai'
 import { useForm } from 'react-hook-form';
 import { setLogin } from '@/redux/slice/authSlice';
 import { login } from '@/services/AuthServices';
 import './Login.css'
+import { Eye, EyeOff } from 'lucide-react';
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -70,7 +70,7 @@ const Login = () => {
                 })}
               />
               <span onClick={toggle} className='form-field__hide'>
-                {isVisible ? <AiTwotoneEye /> : <AiTwotoneEyeInvisible />}
+                {isVisible ? <Eye /> : <EyeOff />}
               </span>
               {errors.password && <p className='form-field__error' style={{ color: 'red' }}>{errors.password.message}</p>}
             </div>

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "@/services/AuthServices";
 import { setLogout } from "@/redux/slice/authSlice";
 import { Input } from "@/components/ui/input";
-import { SlOptionsVertical } from "react-icons/sl";
 const NavbarRight = () => {
     const [isSearch, setIsSearch] = useState("");
     const dispatch = useDispatch();
@@ -24,9 +23,7 @@ const NavbarRight = () => {
                     className="navbar-right__input"
                     placeholder="Tìm kiếm..."
                     onChange={(e) => setIsSearch(e.target.value)} />
-                {/* <FaSearch className="navbar-right__icon" /> */}
             </div>
-            <SlOptionsVertical />
             <button onClick={handleLogout} className="pc-nav__logout">
                 Đăng xuất
             </button>

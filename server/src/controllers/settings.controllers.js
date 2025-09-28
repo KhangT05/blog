@@ -7,14 +7,14 @@ const store = async (req, res) => {
         await settingServices.store(req.body),
     )
 }
-const listSetting = async (req, res) => {
+const pagination = async (req, res) => {
     return OK(
         res,
         'Settings fetched successfully',
-        await settingServices.listSetting(),
+        await settingServices.pagination(),
     )
 }
 module.exports = {
     store,
-    listSetting
+    pagination
 }

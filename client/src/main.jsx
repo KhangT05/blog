@@ -12,62 +12,62 @@ import AuthMiddleware from '@/middleware/AuthMiddleware'
 import NotFound from '@/modules/NotFound/NotFound'
 import Login from '@/modules/AuthLayout/Login/Login'
 import Register from '@/modules/AuthLayout/Register/Register'
-import Layout from '@/modules/pages/Layout/Layout'
+import Layout from '@/modules/pages/Layout'
 import NoAuthMiddleware from '@/middleware/NoAuthMiddleware'
 import Sangtac from '@/modules/pages/SangTac/index'
 import AdminLayout from '@/modules/admin/AdminLayout'
 import Setting from '@/modules/admin/system/index'
 import Users from '@/modules/admin/users/screen/index'
-
+import StoreUser from './modules/admin/users/screen/include/store'
 import './index.css'
 
 const router = createBrowserRouter([
-  {
-    path: '/login', element:
-      <Login />
-  },
-  {
-    path: '/register', element: <Register />
-  },
-  {
-    path: '/',
-    element:
-      <AuthMiddleware>
-        <Layout />
-      </AuthMiddleware>
-    ,
-    children:
-      [
-        { path: '/sang-tac', element: <Sangtac /> },
-        { path: '/thao-luan/huong-dan-dang-truyen', element: <Layout /> }
+    {
+        path: '/login', element:
+            <Login />
+    },
+    {
+        path: '/register', element: <Register />
+    },
+    {
+        path: '/',
+        element:
+            <AuthMiddleware>
+                <Layout />
+            </AuthMiddleware>
+        ,
+        children:
+            [
+                { path: '/sang-tac', element: <Sangtac /> },
+                { path: '/thao-luan/huong-dan-dang-truyen', element: <Layout /> }
 
-      ]
-  },
-  {
-    path: '/admin',
-    element:
-      // <NoAuthMiddleware>
-      <AdminLayout />
-    // </NoAuthMiddleware >
-    ,
-    children: [
-      { path: 'settings', element: <Setting /> },
-      { path: 'users/index', element: <Users /> },
-      { path: 'users/store', element: <Users /> }
-    ]
-  },
-  {
-    path: '*',
-    element: <NotFound />
-  }
+            ]
+    },
+    {
+        path: '/admin',
+        element:
+            // <NoAuthMiddleware>
+            <AdminLayout />
+        // </NoAuthMiddleware >
+        ,
+        children: [
+            { path: 'settings', element: <Setting /> },
+            { path: 'users/index', element: <Users /> },
+            { path: 'users/store', element: <StoreUser /> }
+        ]
+    },
+    {
+        path: '*',
+        element: <NotFound />
+    }
 ])
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <ToastContainer />
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    </Provider>
-  </StrictMode>
+    <StrictMode>
+        <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+                <ToastContainer />
+                <RouterProvider router={router} />
+            </QueryClientProvider>
+        </Provider>
+    </StrictMode>
 )

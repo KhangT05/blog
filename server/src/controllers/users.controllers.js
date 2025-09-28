@@ -59,11 +59,13 @@ const deletedU = async (req, res) => {
     )
 }
 const trash = async (req, res) => {
-    const id = req.params.id;
-    new OK(
+    const { id } = req.params;
+    const result = await userService.trash(id);
+    return OK(
         res,
         'Xoá người dùng hoàn toàn thành công.',
-        await userService.trash(id))
+        result
+    )
 }
 module.exports = {
     store,
