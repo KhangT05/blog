@@ -1,5 +1,5 @@
 import useTable from "@/hooks/useTable"
-import Pagiante from "@/components/Paginate";
+import Pagiante from "@/components/customPagination";
 const SangTac = () => {
     const models = 'users';
     const pagination = async (queryString) => {

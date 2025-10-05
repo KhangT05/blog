@@ -14,7 +14,16 @@ const pagination = async (req, res) => {
         await settingServices.pagination(),
     )
 }
+const edit = async (req, res) => {
+    const { id } = req.params;
+    return OK(
+        res,
+        'Settings fetched successfully',
+        await settingServices.edit(id, req.body),
+    )
+}
 module.exports = {
     store,
-    pagination
+    pagination,
+    edit
 }

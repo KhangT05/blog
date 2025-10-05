@@ -32,7 +32,7 @@ const login = async ({ email, password }) => {
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-        throw new UnauthorizedRequestError('Mật khẩu không đúng');
+        throw new ConFlictRequestError('Mật khẩu không đúng');
     }
     return {
         success: true,

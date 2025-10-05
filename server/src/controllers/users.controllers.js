@@ -50,12 +50,12 @@ const listUsers = async (req, res) => {
         result
     )
 }
-const deletedU = async (req, res) => {
+const updateStatusByField = async (req, res) => {
     const id = req.params.id;
     return OK(
         res,
         'Xoá mềm người dùng thành công.',
-        await userService.deleted(id)
+        await userService.updateStatusByField(id)
     )
 }
 const trash = async (req, res) => {
@@ -73,6 +73,6 @@ module.exports = {
     uploadAvatar,
     editProfile,
     listUsers,
-    deletedU,
+    updateStatusByField,
     trash
 };

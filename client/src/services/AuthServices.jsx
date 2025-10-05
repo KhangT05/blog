@@ -1,22 +1,21 @@
 import api from '@/config/axios'
-import { handleAxiosError } from '@/helper/axiosHelper';
-import { showToast } from '@/helper/myHelper';
-
+import { toast } from 'sonner';
 export const register = async (data) => {
-    try {
-        const request = await api.post(`/auth/register`, {
-            name: data.name,
-            email: data.email,
-            password: data.password
-        });
-        showToast('success', 'Đăng ký thành công')
-        return {
-            user: request.data.user,
-        }
-    } catch (error) {
-        handleAxiosError(error)
-        throw error;
+    // try {
+    const request = await api.post(`/auth/register`, {
+        name: data.name,
+        email: data.email,
+        password: data.password
+    });
+    // showToast('success', 'Đăng ký thành công')
+    toast.success('Đăng ký thành công')
+    return {
+        user: request.data.user,
     }
+    // } catch (error) {
+    //     handleAxiosError(error)
+    //     throw error;
+    // }
 }
 export const login = async (payload) => {
     try {
@@ -27,13 +26,14 @@ export const login = async (payload) => {
         if (response.data.data.accessToken) {
             localStorage.setItem('accessToken', response.data.data.accessToken);
         }
-        showToast('success', 'Đăng nhập thành công.')
+
+        toast.success('Đăng nhập thành công')
         return {
             user: response.data.data.user,
             token: response.data.data.accessToken
         };
     } catch (error) {
-        handleAxiosError(error)
+        toast.error(error.response?.data?.message || 'Đăng nhập thất bại');
         throw error
     }
 }
@@ -45,16 +45,15 @@ export const fetchUser = async () => {
             user: response.data.data.user
         }
     } catch (error) {
-        console.error("Lỗi trong fetchUser:", error);
         return null;
     }
 }
 export const logout = async () => {
-    try {
-        const response = await api.post('/auth/logout');
-        showToast("Đăng xuất thành công", 'success')
-        return response
-    } catch (error) {
-        showToast("Đăng xuất thât bại", "error")
-    }
+    // try {
+    const response = await api.post('/auth/logout');
+    toast.success("Đăng xuất thành công", 'success')
+    return response
+    // } catch (error) {
+    //     showToast("Đăng xuất thât bại", "error")
+    // }
 }

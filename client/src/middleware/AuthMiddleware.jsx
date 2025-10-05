@@ -22,7 +22,7 @@ function AuthMiddleware({ children }) {
                 }
                 else {
                     dispatch(setLogout());
-                    navigate('/admin');
+                    navigate('/login');
                 }
             }
         }

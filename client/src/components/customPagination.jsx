@@ -7,8 +7,10 @@ import {
     PaginationNext
 } from './ui/pagination'
 
-const Paginate = ({ pagination, pageChange }) => {
+const CustomPagination = ({ pagination, pageChange }) => {
     const { currentPage, totalPages } = pagination;
+    // const prevLink = pagination.find(link => link.label === 'abc,Previous');
+    // console.log(prevLink)
     const generatePageNumber = () => {
         const page = [];
         const start = Math.max(1, currentPage - 2);
@@ -54,4 +56,4 @@ const Paginate = ({ pagination, pageChange }) => {
         </Pagination>
     )
 }
-export default Paginate
+export default CustomPagination

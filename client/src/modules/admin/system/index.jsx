@@ -8,24 +8,29 @@ import CustomInput from "@/components/customInput";
 import LoadingButton from '@/components/LoadingButton';
 /** SERVICES */
 import { store } from '@/services/SettingServices';
-const validateSchema = yup.object({
-    site_name: yup.string()
-        .min(6, "Vui lòng nhập từ 6 kí tự trở lên")
-        .required('Vui lòng nhập tên site'),
-    site_email: yup.string().email("Email không hợp lệ").required("Vui lòng nhập email"),
-    site_phone: yup.string()
-        .matches(/^\d{10}$/, "Vui lòng nhập đủ 10 số")
-        .required('Vui lòng nhập đủ 10 sô'),
-})
+import { toast } from 'sonner';
 const Setting = () => {
+    const schema = yup.object({
+        site_name: yup.string()
+            .min(6, "Vui lòng nhập từ 6 kí tự trở lên")
+            .required('Vui lòng nhập tên site'),
+        site_email: yup.string().email("Email không hợp lệ").required("Vui lòng nhập email"),
+        site_phone: yup.string()
+            .matches(/^\d{10}$/, "Vui lòng nhập đủ 10 số")
+            .required('Vui lòng nhập đủ 10 sô'),
+    });
     const methods = useForm({
-        resolver: yupResolver(validateSchema)
+        resolver: yupResolver(schema)
     });
     const { handleSubmit, formState: { errors } } = methods;
-    const { submitHandler, isLoading } = useFormSubmit(store);
+    const { submitHandler, isLoading, isSuccess } = useFormSubmit(store);
     useEffect(() => {
-        console.log(errors)
-    }, [errors])
+    }, [errors]);
+    useEffect(() => {
+        if (isSuccess) {
+
+        }
+    })
     return (
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(submitHandler)} className="space-y-6 max-w-md">
@@ -34,19 +39,16 @@ const Setting = () => {
                         name="site_name"
                         label="site_name"
                         type="text"
-                        required={true}
                     />
                     <CustomInput
                         name="site_email"
                         label="site_email"
                         type="text"
-                        required={true}
                     />
                     <CustomInput
                         name="site_phone"
                         label="site_phone"
                         type="text"
-                        required={true}
                     />
                     <CustomInput
                         name="site_address"
@@ -59,8 +61,7 @@ const Setting = () => {
                         type="text"
                     />
                 </div>
-                <LoadingButton loading={isLoading} text="Lưu cài đặt" />
-
+                <LoadingButton loading={isLoading} className={"bg-sky-600"} text="Lưu lại" />
             </form>
         </FormProvider>
     )

@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 const {
     BadRequestError,
     ConFlictRequestError,
-    UnauthorizedRequestError,
     NotFoundRequestError
 } = require('../middleware/error.respone')
 const store = async (name, email, password, phone, gender, avatar, role = []) => {
@@ -102,8 +101,8 @@ const listUsers = async (page = 1, limit = 10) => {
         }
     }
 }
-const updateStatus = async (id) => {
-    const conn = 'UPDATE users SET deleted_at = CURRENT_TIMESTAMP, status = 0 WHERE id = ?';
+const updateStatusByField = async (id) => {
+    const conn = 'UPDATE users SET updated_at = CURRENT_TIMESTAMP, status = 0 WHERE id = ?';
     await pool.promise().query(conn, [id]);
     return { id }
 }
@@ -118,6 +117,6 @@ module.exports = {
     uploadAvatar,
     getProfile,
     listUsers,
-    updateStatus,
+    updateStatusByField,
     trash,
 }

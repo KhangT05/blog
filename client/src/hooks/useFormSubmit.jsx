@@ -1,5 +1,5 @@
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { showToast } from "@/helper/myHelper";
+import { toast } from "sonner";
 import { useState } from "react";
 const useFormSubmit = (submitFn, rejetch = null) => {
     const [isSuccess, setIsSuccess] = useState(false);
@@ -7,14 +7,19 @@ const useFormSubmit = (submitFn, rejetch = null) => {
     const mutation = useMutation({
         mutationFn: (payload) => submitFn(payload),
         onSuccess: (response) => {
-            showToast('Cập nhật dữ liệu liệu thành công', 'success');
+            toast.success('Cập nhật dữ liệu liệu thành công', {
+                description: response.data.message
+            });
             if (rejetch) {
                 queryClient.invalidateQueries(rejetch)
             }
             setIsSuccess(true)
         },
         onError: (error) => {
-            showToast(error.response.data.message, 'error')
+            console.log(error.response.data.message)
+            toast.error('Thông báo từ hệ thống', {
+                description: error?.response?.data?.message
+            })
         }
     });
     const submitHandler = async (payload) => {

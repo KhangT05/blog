@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form';
 import { setLogin } from '@/redux/slice/authSlice';
 import { login } from '@/services/AuthServices';
-import './Login.css'
 import { Eye, EyeOff } from 'lucide-react';
 const Login = () => {
   const dispatch = useDispatch();
@@ -30,21 +29,21 @@ const Login = () => {
   }
   return (
     <>
-      <div className='auth-layout'>
-        <div className='auth-layout__card'>
-          <div className='login-header'>
-            <h3 className='login-header__title'>Đăng nhập</h3>
-            <p className='login-header__subtitle'>Nếu bạn chưa có tài khoản,
+      <div className='flex justify-center items-center bg-[#1E2545] h-screen'>
+        <div className='bg-white rounded-3xl w-[400px] p-[15px]'>
+          <div className='text-center mb-[30px]'>
+            <h3 className='text-[28px] font-semibold text-[#333]'>Đăng nhập</h3>
+            <p className='text-[#aaa] text-base'>Nếu bạn chưa có tài khoản,
               <Link to={'/register'} className='text-[#0e0d0d] font-semibold hover:text-[#667eea]'>
                 đăng ký ngay
               </Link>
             </p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className='form-field'>
+            <div className='mb-[15px] relative'>
               <input
                 type='email'
-                className='form-field__input'
+                className='w-full py-[10px] pr-[40px] pl-3 border-2 border-[#e1e5e9] rounded-lg text-base bg-white placeholder:text-[#999]'
                 name='email'
                 placeholder='Nhập email'
                 {...register('email', {
@@ -55,32 +54,32 @@ const Login = () => {
                   }
                 })}
               />
-              {errors.email && <p className='form-field__error' style={{ color: 'red' }}>
+              {errors.email && <p className='text-xs text-[#e74c3c] mt-1 mb-0' style={{ color: 'red' }}>
                 {errors.email.message}
               </p>}
             </div>
-            <div className='form-field'>
+            <div className='mb-[15px] relative'>
               <input
                 type={!isVisible ? 'password' : 'text'}
-                className='form-field__input'
+                className='w-full py-[10px] pr-[40px] pl-3 border-2 border-[#e1e5e9] rounded-lg text-base bg-white placeholder:text-[#999]'
                 name='password'
                 placeholder='Nhập mật khẩu'
                 {...register('password', {
                   required: 'Vui lòng nhập mật khẩu'
                 })}
               />
-              <span onClick={toggle} className='form-field__hide'>
+              <span onClick={toggle} className='absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer'>
                 {isVisible ? <Eye /> : <EyeOff />}
               </span>
-              {errors.password && <p className='form-field__error' style={{ color: 'red' }}>{errors.password.message}</p>}
+              {errors.password && <p className='text-xs text-[#e74c3c] mt-1 mb-0' style={{ color: 'red' }}>{errors.password.message}</p>}
             </div>
-            <div className='login-footer'>
+            <div className='text-center'>
               <button
                 type='submit'
-                className='submit-btn'>
+                className='w-full py-[14px] px-5 bg-[#c2bfb5] rounded-lg text-base font-semibold cursor-pointer mb-[10px] hover:shadow-[0_4px_12px_rgba(83,93,142,0.3)] hover:bg-[#667eea] hover:text-white'>
                 {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
               </button>
-              <Link to={"/password/rest"} className='login-password__reset'>Quên mật khẩu?</Link>
+              <Link to={"/password/rest"} className='hover:text-[#667eea]'>Quên mật khẩu?</Link>
             </div>
           </form>
         </div>

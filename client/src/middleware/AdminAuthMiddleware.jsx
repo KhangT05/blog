@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom";
 
-
-
-function NoAuthMiddleware({ children }) {
+function AdminAuthMiddleware({ children }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isAuthenticated, user } = useSelector(state => state.auth);
@@ -23,7 +21,12 @@ function NoAuthMiddleware({ children }) {
                 const userData = await fetchUser();
                 if (userData !== null) {
                     dispatch(setLogin(userData));
-                    navigate('/');
+                    if (userData.user.role === 'SUPER ADMIN') {
+                        navigate('/admin');
+                    }
+                    else {
+                        navigate('/')
+                    }
                 } else {
                     setcheckedAuth(true);
                 }
@@ -39,4 +42,4 @@ function NoAuthMiddleware({ children }) {
     }, [isAuthenticated, user, dispatch, navigate])
     return checkedAuth ? children : null
 }
-export default NoAuthMiddleware
+export default AdminAuthMiddleware

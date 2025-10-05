@@ -6,33 +6,40 @@ const CustomInput = ({
     name,
     type = "text",
     className = '',
-    required = false,
+    autoComplete = "",
     ...restProps
 }) => {
     const { register, formState: { errors } } = useFormContext();
     const error = errors[name];
     return (
-        <div className={className}>
-            <Label htmlFor={name}>
-                {label}
+        <>
+            {restProps.required}
+            <div className={className}>
+                <Label htmlFor={name}>
+                    {label}
+                    {
+                        restProps.required && <span className="text-sm text-red-600">*</span>
+                    }
+                </Label>
+                <Input
+                    type={type}
+                    id={name}
+                    autoComplete={autoComplete}
+                    {...register(name)}
+                    {...(restProps.onChange ? { onChange: restProps.onChange } : {})}
+                />
                 {
-                    required && <span className="text-sm text-red-600">*</span>
+                    error && (
+                        <div className="error-line">
+                            <span className="text-sm text-red-600">
+                                {error.message}
+                            </span>
+                        </div>
+                    )
                 }
-            </Label>
-            <Input
-                type={type}
-                id={name}
-                {...register(name)}
-                {...restProps}
-            />
-            {
-                error && (
-                    <p className="text-sm text-red-600">
-                        {error.message}
-                    </p>
-                )
-            }
-        </div >
+            </div >
+        </>
+
     )
 }
 export default CustomInput

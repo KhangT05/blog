@@ -3,22 +3,23 @@ import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import store from './redux/store'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Toaster } from './components/ui/sonner'
 const queryClient = new QueryClient()
 
 
-import AuthMiddleware from '@/middleware/AuthMiddleware'
-import NotFound from '@/modules/NotFound/NotFound'
-import Login from '@/modules/AuthLayout/Login/Login'
-import Register from '@/modules/AuthLayout/Register/Register'
-import Layout from '@/modules/pages/Layout'
-import NoAuthMiddleware from '@/middleware/NoAuthMiddleware'
-import Sangtac from '@/modules/pages/SangTac/index'
-import AdminLayout from '@/modules/admin/AdminLayout'
-import Setting from '@/modules/admin/system/index'
-import Users from '@/modules/admin/users/screen/index'
-import StoreUser from './modules/admin/users/screen/include/store'
+import AuthMiddleware from './middleware/AuthMiddleware'
+import NotFound from './modules/NotFound/NotFound'
+import Login from './modules/AuthLayout/Login/Login'
+import Register from './modules/AuthLayout/Register/Register'
+import Layout from './modules/pages/Layout'
+// import AdminAuthMiddleware from './middleware/AdminAuthMiddleware'
+import AdminAuthMiddleware from './middleware/AdminAuthMiddleware'
+import Sangtac from './modules/pages/SangTac/index'
+import AdminLayout from './modules/admin/AdminLayout'
+import Setting from './modules/admin/system/index'
+import Users from './modules/admin/users/screen/index'
+import SaveUser from './modules/admin/users/screen/save'
 import './index.css'
 
 const router = createBrowserRouter([
@@ -46,14 +47,14 @@ const router = createBrowserRouter([
     {
         path: '/admin',
         element:
-            // <NoAuthMiddleware>
+            // <AdminAuthMiddleware>
             <AdminLayout />
-        // </NoAuthMiddleware >
+        // </AdminAuthMiddleware >
         ,
         children: [
             { path: 'settings', element: <Setting /> },
             { path: 'users/index', element: <Users /> },
-            { path: 'users/store', element: <StoreUser /> }
+            { path: 'users/store', element: <SaveUser /> }
         ]
     },
     {
@@ -65,7 +66,7 @@ createRoot(document.getElementById('root')).render(
     <StrictMode>
         <Provider store={store}>
             <QueryClientProvider client={queryClient}>
-                <ToastContainer />
+                <Toaster position="top-right" richColors />
                 <RouterProvider router={router} />
             </QueryClientProvider>
         </Provider>

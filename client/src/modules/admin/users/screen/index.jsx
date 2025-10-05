@@ -2,13 +2,17 @@
 import { pagination, destroy } from '@/services/UserServices'
 // COMPONENTS
 import useTable from '@/hooks/useTable'
-import Paginate from "@/components/Paginate"
+import CustomPagination from "@/components/customPagination"
 import CustomTable from "@/components/customTable"
 import Heading from "@/components/heading"
-import CustomToolbar from '@/components/customToolbar'
+import CustomFilter from '@/components/customFilter'
+import CustomCard from '@/components/customCard'
 // SETTINGS
 import { tableColumn, models, buttonActions, headingConfig } from '../settings/index'
-import CustomCard from '@/components/customCard'
+import { filters } from '@/contanst/general'
+import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
+import { CirclePlus } from 'lucide-react'
 const Users = ({ }) => {
     const breadcrumb = [
         {
@@ -34,10 +38,17 @@ const Users = ({ }) => {
                 <CustomCard
                     openHeader={true}
                     title={headingConfig}
-                    loading={false}
                     desc={'Bang'}
-                    openFooter={true}
                 >
+                    <div className='flex justify-between'>
+                        <CustomFilter filters={filters} models={models} />
+                        <Link to={''}>
+                            <Button>
+                                Thêm mới bản ghi
+                                <CirclePlus />
+                            </Button>
+                        </Link>
+                    </div>
                     <div>
                         <CustomTable
                             isLoading={isLoading}
@@ -52,15 +63,14 @@ const Users = ({ }) => {
                     </div>
                     {
                         data?.pagination && data[models] ? (
-                            <Paginate pagination={data.pagination}
+                            <CustomPagination pagination={data.pagination}
                                 pageChange={handlePageChange}
                             />
                         ) : null
                     }
                 </CustomCard>
-            </div>
+            </div >
         </>
     )
 }
-
 export default Users

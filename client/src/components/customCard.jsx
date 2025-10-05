@@ -1,4 +1,4 @@
-import { Loader } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import {
     Card,
     CardAction,
@@ -10,8 +10,8 @@ import {
 } from "./ui/card"
 const CustomCard = ({
     title,
-    openHeader = false,
-    openFooter = false,
+    openHeader,
+    openFooter,
     desc,
     loading = false,
     children,
@@ -19,7 +19,7 @@ const CustomCard = ({
     footerDesc
 }) => {
     return (
-        <Card className="relative">
+        <Card className="relative rouded-[5px] overflow-hidden">
             {
                 openHeader && (
                     <CardHeader className="border-b">
@@ -28,19 +28,19 @@ const CustomCard = ({
                     </CardHeader>
                 )
             }
-            <CardContent className={`${className} p-6`}>
+            <CardContent className={`${className} py-[20px]`}>
                 {children}
             </CardContent>
             {
                 openFooter && (
-                    <CardFooter>
+                    <CardFooter className="flex justify-center">
                         {footerDesc}
                     </CardFooter>
                 )
             }
             {loading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-block/40 z-10">
-                    <div className="size-8 animate-spin text-muted-foreground"> <Loader /> </div>
+                    <div className="size-8 animate-spin text-muted-foreground"> <Loader2 /> </div>
                 </div>
             )}
         </Card>
