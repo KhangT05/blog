@@ -80,15 +80,57 @@ const getProfile = async (id) => {
 // const extractPublic = async () => {
 //     const parts = urlencoded.
 // }
-const listUsers = async (page = 1, limit = 10) => {
-    const offset = (page - 1) * limit;
-    const selectQuery = `
-        SELECT id,name,email,status FROM users ORDER BY id ASC LIMIT ? OFFSET ?
-    `
-    const countQuery = `SELECT COUNT(id) as count FROM users`;
-    const [rows] = await pool.promise().query(selectQuery, [limit, offset]);
-    const [[{ count }]] = await pool.promise().query(countQuery);
-    const totalPages = Math.ceil(count / limit);
+function paginateAgrument(request) {
+    return {
+        keyword: {
+            search: request.keyword || '',
+            fields: ['name', 'email', 'created_at', 'updated_at']
+        },
+        // sort: request?.sort ? request.sort.split(',') : ['id', 'asc'],
+        perpage: parseInt(request.perpage) || 10,
+        page: parseInt(request.page) || 1,
+        filters: {
+            status: request.status !== undefined ? parseInt(request.status) : null
+        }
+    }
+}
+const listUsers = async (request) => {
+    const args = paginateAgrument(request);
+    const { keyword, perpage, page, filters } = args;
+
+    const offset = (page - 1) * perpage;
+
+    const condition = [];
+    const queryParams = [];
+    const countParams = [];
+
+    if (keyword.search) {
+        const searchPattern = `%${keyword.search}%`;
+        const searchConditions = keyword.fields
+            .map((field) =>
+                `${field} LIKE ?`)
+            .join(' OR ');
+        condition.push(`(${searchConditions})`);
+        keyword.fields.forEach(() => {
+            queryParams.push(searchPattern);
+            countParams.push(searchPattern);
+        });
+    }
+    if (filters.status) {
+        condition.push('status = ?');
+        queryParams.push(filters.status);
+        countParams.push(filters.status);
+    }
+    const whereClause = condition.length > 0 ? `WHERE ${condition.join(' AND ')}` : ''
+    let queryString = `SELECT id,name,email,status,created_at,updated_at
+     FROM users ${whereClause} LIMIT ? OFFSET ?`;
+    queryParams.push(perpage, offset)
+    const countQuery = `SELECT COUNT(id) as count FROM users ${whereClause}`;
+    const [rows] = await pool.promise().query(queryString, queryParams);
+    const [[{ count }]] = await pool.promise().query(countQuery, countParams);
+
+
+    const totalPages = Math.ceil(count / perpage);
     const nextPage = page < totalPages ? page + 1 : null;
     const prevPage = page > 1 ? page - 1 : null;
     return {
@@ -101,10 +143,12 @@ const listUsers = async (page = 1, limit = 10) => {
         }
     }
 }
-const updateStatusByField = async (id) => {
-    const conn = 'UPDATE users SET updated_at = CURRENT_TIMESTAMP, status = 0 WHERE id = ?';
-    await pool.promise().query(conn, [id]);
-    return { id }
+const updateStatusByField = async (status, id) => {
+    const conn = 'UPDATE users SET updated_at = CURRENT_TIMESTAMP, status = ? WHERE id = ?';
+    const [rows] = await pool.promise().query(conn, [status, id]);
+    return {
+        result: rows
+    }
 }
 const trash = async (id) => {
     const conn = 'DELETE FROM users WHERE id = ?'

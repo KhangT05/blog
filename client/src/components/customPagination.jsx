@@ -4,18 +4,17 @@ import {
     PaginationPrevious,
     PaginationItem,
     PaginationLink,
+    PaginationEllipsis,
     PaginationNext
 } from './ui/pagination'
 
 const CustomPagination = ({ pagination, pageChange }) => {
     const { currentPage, totalPages } = pagination;
-    // const prevLink = pagination.find(link => link.label === 'abc,Previous');
-    // console.log(prevLink)
     const generatePageNumber = () => {
         const page = [];
-        const start = Math.max(1, currentPage - 2);
-        const end = Math.min(totalPages, currentPage + 2);
-        for (let i = start; i <= end; i++) {
+        // const start = Math.max(1, currentPage - 2);
+        // const end = Math.min(totalPages, currentPage + 2);
+        for (let i = currentPage; i <= totalPages; i++) {
             page.push(i);
         }
         return page;
@@ -23,20 +22,27 @@ const CustomPagination = ({ pagination, pageChange }) => {
     const pageNum = generatePageNumber();
     return (
         <Pagination>
-            <PaginationContent>
+            <PaginationContent className="cursor-pointer">
+                {/* {
+                    currentPage
+                } */}
                 {
                     currentPage > 1 && (
                         <PaginationItem>
-                            <PaginationPrevious onClick={() => {
-                                pageChange(currentPage - 1)
-                            }} className="cursor-pointer" />
+                            <PaginationPrevious
+                                aria-disabled={currentPage === 1}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    pageChange(currentPage - 1)
+                                }} />
                         </PaginationItem>
                     )
                 }
                 {
                     pageNum.map((page) => (
                         <PaginationItem key={page}>
-                            <PaginationLink onClick={() => {
+                            <PaginationLink onClick={(e) => {
+                                e.preventDefault();
                                 pageChange(page)
                             }}
                                 isActive={page === currentPage} > {page} </PaginationLink>
@@ -44,11 +50,17 @@ const CustomPagination = ({ pagination, pageChange }) => {
                     ))
                 }
                 {
+                    <PaginationItem>
+                        <PaginationEllipsis />
+                    </PaginationItem>
+                }
+                {
                     currentPage < totalPages && (
                         <PaginationItem>
-                            <PaginationNext onClick={() => {
+                            <PaginationNext onClick={(e) => {
+                                e.preventDefault();
                                 pageChange(currentPage + 1)
-                            }} className="cursor-pointer" />
+                            }} />
                         </PaginationItem>
                     )
                 }

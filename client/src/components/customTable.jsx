@@ -19,7 +19,7 @@ const CustomTable = ({
     tableColumn,
     destroy,
     refetch,
-    buttonActions
+    buttonActions,
 }) => {
     const {
         isLoading: isDialogLoading,
@@ -28,6 +28,12 @@ const CustomTable = ({
         alertDialogOpen,
         confirmAction
     } = useDialog(refetch);
+    // const { handleChecked, setInitalColumnState, columnState } = useColumnState();
+    // useEffect(() => {
+    //     if (!isLoading && data[models]) {
+    //         setInitalColumnState(data[models], 'status')
+    //     }
+    // }, [isLoading, data])
     return (
         <>
             <Table className="border border-solid">
@@ -35,13 +41,13 @@ const CustomTable = ({
                     <TableRow>
                         {
                             tableColumn && tableColumn.map((column, index) => (
-                                <TableHead key={index} className="">
+                                <TableHead key={index} className="text-center">
                                     {column.name}
                                 </TableHead>
                             ))
                         }
-                        <TableHead className='text-center'>Trạng Thái</TableHead>
-                        <TableHead>Hoạt Động</TableHead>
+                        <TableHead className={"text-center"}>Trạng Thái</TableHead>
+                        <TableHead className={""}>Hoạt Động</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -70,23 +76,23 @@ const CustomTable = ({
                                         <TableRow key={index}>
                                             {
                                                 tableColumn && tableColumn.map((column, index) => (
-                                                    <TableCell key={index}>
+                                                    <TableCell key={index} className={"text-center"}>
                                                         {
                                                             column.render(row)
                                                         }
                                                     </TableCell>
                                                 ))
                                             }
-                                            <TableCell>
+                                            <TableCell className={"text-center"}>
                                                 <Switch
                                                     value={row.id}
-                                                    checked={row.status === 1}
+                                                    checked={row.status}
                                                     onCheckedChange=
-                                                    {() => handleSwitchChange(row.id, row.status, models)}
-                                                    className="data-[state=checked]:bg-emerald-500"
+                                                    {() => handleSwitchStatus(row.id, row.status, models)}
+                                                    className="data-[state=checked]:bg-emerald-500 cursor-pointer"
                                                 />
                                             </TableCell>
-                                            <TableCell className="flex">
+                                            <TableCell className="flex space-x-2">
                                                 {buttonActions && buttonActions.map((action, index) => (
                                                     action.path ? (
                                                         <Link
@@ -98,7 +104,7 @@ const CustomTable = ({
                                                     ) : (
                                                         <Button
                                                             key={index}
-                                                            className={`h-1${action.className}`}
+                                                            className={`h-1${action.className} bg-sky-500`}
                                                             onClick={
                                                                 action.onClick ? (
                                                                     () => {

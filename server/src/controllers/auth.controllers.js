@@ -19,7 +19,7 @@ const login = async (req, res) => {
     });
     return OK(
         res,
-        'Login successful',
+        'Đăng nhập thành công',
         {
             user,
             accessToken: tokens.accessToken,
@@ -30,7 +30,7 @@ const authMe = async (req, res) => {
     const user = await authService.validateUser({ email: req.user.email });
     return OK(
         res,
-        "User profile retrieved successfully",
+        "Đã lấy hồ sơ thành công",
         {
             user: {
                 id: user.id,

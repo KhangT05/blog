@@ -6,7 +6,7 @@ import CustomNotice from "@/components/customNotice"
 import useFormSubmit from "@/hooks/useFormSubmit"
 import LoadingButton from "@/components/LoadingButton"
 // SETTINGS
-import { headingConfig } from "../settings/index"
+import { headingConfig, models } from "../settings/index"
 // HOOKS FORM
 import { FormProvider, useForm } from "react-hook-form"
 // SERVICES
@@ -14,6 +14,13 @@ import { save } from '@/services/UserServices';
 // 
 import * as yup from 'yup'
 import { yupResolver } from "@hookform/resolvers/yup"
+import { useEffect, useMemo } from "react"
+import { useParams } from "react-router-dom"
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage
+} from '@/components/ui/avatar'
 const StoreUser = () => {
     const schema = yup.object({
         name: yup.string().min(1, 'Tên phải có ít nhất 1 ký tự').required('Vui lòng nhập tên người dùng'),
@@ -38,6 +45,11 @@ const StoreUser = () => {
         },
     ];
     const { submitHandler, isLoading } = useFormSubmit(save);
+    const id = useParams();
+    const isEdit = !!id;
+    useEffect(() => {
+        isEdit
+    }, [])
     return (
         <>
             <div className="flex flex-1 flex-col page-wrapper">
@@ -46,7 +58,7 @@ const StoreUser = () => {
                     breadcrumb={breadcrumb}
                 />
                 <div className="page-container">
-                    <div className="grid grid-cols-1 gap-2">
+                    <div className="grid grid-cols-12 gap-2">
                         <div className="col-span-5">
                             <CustomNotice />
                         </div>
@@ -58,15 +70,15 @@ const StoreUser = () => {
                                 loading={false}>
                                 <FormProvider {...methods}>
                                     <form onSubmit={handleSubmit(submitHandler)} className="space-y-6 max-w-md">
-                                        <div className="grid grid-cols-2 gap-2">
+                                        <div className="grid grid-cols-1 gap-2">
                                             <div className="col-span-1">
                                                 <CustomInput
                                                     name="name"
-                                                    label="Ten nguoi dung"
+                                                    label="Tên người dùng"
                                                     required={true}
                                                 />
                                             </div>
-                                            <div className="col-span-1">
+                                            <div className="col-span-5">
                                                 <CustomInput
                                                     name="email"
                                                     label="Email"
@@ -74,18 +86,26 @@ const StoreUser = () => {
                                                     required={true}
                                                 />
                                             </div>
-                                            <div className="col-span-1">
+                                            <div className="col-span-7">
                                                 <CustomInput
                                                     name="password"
-                                                    label="Mat khau"
+                                                    label="Mật khẩu"
                                                     type="password"
                                                     autoComplete="off"
                                                     required={true}
                                                 />
                                             </div>
+                                            <div>
+                                                <Avatar>
+                                                    <AvatarImage src="https://github.com/shadcn.png" />
+                                                    <AvatarFallback>CN</AvatarFallback>
+                                                </Avatar>
+                                            </div>
                                         </div>
-                                        <LoadingButton loading={isLoading} className={"bg-sky-600"} text="Lưu lại" />
-                                        <LoadingButton loading={isLoading} text="Lưu lại và đong" />
+                                        <LoadingButton
+                                            loading={isLoading}
+                                            className={"bg-sky-600"}
+                                            text="Lưu lại" />
 
                                     </form>
                                 </FormProvider>

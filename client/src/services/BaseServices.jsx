@@ -32,10 +32,10 @@ const baseSave = async (apiURL, payload, action = 'create', id = null) => {
     return response.data
 }
 const updateStatusByField = async (models, value, id, column) => {
-    const response = await api.put(`/${models}/${id}`, { value, column });
+    const response = await api.put(`/${models}/${id}`, { column, value });
     return response.data
 }
-const baseDestroy = async (models, column,id) => {
+const baseDestroy = async (models, column, id) => {
     const response = await api.delete(`/${models}/${column}/${id}`);
     return response.data
 }

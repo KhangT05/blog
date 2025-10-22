@@ -16,7 +16,6 @@ const useFormSubmit = (submitFn, rejetch = null) => {
             setIsSuccess(true)
         },
         onError: (error) => {
-            console.log(error.response.data.message)
             toast.error('Thông báo từ hệ thống', {
                 description: error?.response?.data?.message
             })

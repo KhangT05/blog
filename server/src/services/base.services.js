@@ -63,11 +63,11 @@
 
 // //     return await query;
 // // }
-class BaseService {
-    constructor() {
+// class BaseService {
+//     constructor() {
 
-    }
-    static updateStatusByField = async () => {
+//     }
+//     static updateStatusByField = async () => {
 
-    }
-}
+//     }
+// }

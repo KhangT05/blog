@@ -1,3 +1,4 @@
+
 export const filters = [
     {
         key: 'status',
@@ -20,11 +21,11 @@ export const filters = [
     },
     {
         key: 'perpage',
-        defaultValue: '10',
         placeholder: 'Chọn trạng thái',
+        defaultValue: '10',
         option: ['10', '20', '40', '60', '80', '100'].map((item) => ({
-            'label': `${item} bản ghi`,
-            'value': item
+            label: `${item} bản ghi`,
+            value: `${item}`
         }))
     }
 ]

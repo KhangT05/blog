@@ -29,6 +29,14 @@ export const tableColumn = [
     {
         name: 'Email',
         render: (item) => <span> {item.email} </span>
+    },
+    {
+        name: 'Ngày tạo',
+        render: (item) => <span>{item.created_at}</span>
+    },
+    {
+        name: 'Ngày cập nhật',
+        render: (item) => <span>{item.updated_at}</span>
     }
 ]
 export const buttonActions = [

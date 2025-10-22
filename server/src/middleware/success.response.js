@@ -30,7 +30,7 @@ class Ok extends SuccessResponse {
         super({ message, metaData })
     }
 }
-const CREATED = async (res,message, metaData, statusCode, reason) => {
+const CREATED = async (res, message, metaData, statusCode, reason) => {
     new Created({
         message,
         metaData,
@@ -38,7 +38,7 @@ const CREATED = async (res,message, metaData, statusCode, reason) => {
         reason
     }).send(res);
 }
-const OK = async (res,message, metaData) => {
+const OK = async (res, message, metaData) => {
     new Ok({
         message,
         metaData,

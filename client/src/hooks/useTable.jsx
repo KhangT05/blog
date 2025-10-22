@@ -1,34 +1,33 @@
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { useQuery } from '@tanstack/react-query'
+import { useNavigate, useSearchParams } from "react-router-dom"
+
 const useTable = ({ pagination, models }) => {
-    const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
-    const current = searchParams.get('page') ? parseInt(searchParams.get('page')) : '';
-
-    const [isPage, setIsPage] = useState(current);
-    const { data, isLoading, isError, refetch } = useQuery({
-        queryKey: [models, isPage],
-        queryFn: () => pagination(isPage)
+    const currentPage = parseInt(searchParams.get('page')) || 1;
+    const [page, setPage] = useState(currentPage);
+    const { data, isError, isLoading, refetch } = useQuery({
+        queryKey: [models, page, searchParams.toString()],
+        queryFn: () => {
+            const params = Object.fromEntries(searchParams.entries());
+            return pagination({ ...params, page });
+        }
     });
-    const handlePageChange = (newPage) => {
-        setIsPage(newPage)
-        setSearchParams({ page: newPage.toString() });
-    };
-
+    const handlePageChange = (page) => {
+        searchParams.set('page', page.toString());
+        setSearchParams(searchParams);
+        setPage(page);
+    }
     useEffect(() => {
-        navigate(`?${isPage}`, { replace: true })
-    }, [navigate, isPage]);
-
-
+        setPage(currentPage);
+    }, [currentPage])
     return {
         data,
-        isLoading,
-        isPage,
         isError,
+        isLoading,
         refetch,
         handlePageChange,
+        page
     }
 }
 export default useTable

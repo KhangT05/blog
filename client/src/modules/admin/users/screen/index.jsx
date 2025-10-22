@@ -1,5 +1,5 @@
 // SERVICES
-import { pagination, destroy } from '@/services/UserServices'
+import { pagination, destroy, updateStatusByUsers } from '@/services/UserServices'
 // COMPONENTS
 import useTable from '@/hooks/useTable'
 import CustomPagination from "@/components/customPagination"
@@ -13,6 +13,7 @@ import { filters } from '@/contanst/general'
 import { Button } from '@/components/ui/button'
 import { Link } from 'react-router-dom'
 import { CirclePlus } from 'lucide-react'
+import useFilter from '@/hooks/useFilter'
 const Users = ({ }) => {
     const breadcrumb = [
         {
@@ -38,12 +39,12 @@ const Users = ({ }) => {
                 <CustomCard
                     openHeader={true}
                     title={headingConfig}
-                    desc={'Bang'}
+                    desc={'Bảng mô tả về danh sách người dùng , có các chức năng quản lý người dùng,...'}
                 >
                     <div className='flex justify-between'>
                         <CustomFilter filters={filters} models={models} />
-                        <Link to={''}>
-                            <Button>
+                        <Link to={`/admin/${models}/store`}>
+                            <Button className="bg-red-500 hover:bg-emerald-400">
                                 Thêm mới bản ghi
                                 <CirclePlus />
                             </Button>

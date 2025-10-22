@@ -2,7 +2,7 @@ import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 const Heading = ({ heading, breadcrumb }) => {
     return (
-        <div className='mb-5'>
+        <div className='mb-5 p-5'>
             <h2 className="uppercase font-semibold"> {heading} </h2>
             <ol className="flex">
                 {
