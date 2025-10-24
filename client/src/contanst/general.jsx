@@ -1,3 +1,4 @@
+import moment from "moment/moment"
 
 export const filters = [
     {
@@ -29,3 +30,6 @@ export const filters = [
         }))
     }
 ]
+export const formatDatetime = (datetime) => {
+    return moment(datetime).format('DD/MM/YYYY h:mm:ss A')
+}

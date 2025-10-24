@@ -13,7 +13,6 @@ import { filters } from '@/contanst/general'
 import { Button } from '@/components/ui/button'
 import { Link } from 'react-router-dom'
 import { CirclePlus } from 'lucide-react'
-import useFilter from '@/hooks/useFilter'
 const Users = ({ }) => {
     const breadcrumb = [
         {
@@ -25,7 +24,7 @@ const Users = ({ }) => {
             path: '/admin/users/index'
         },
     ];
-    const { data, isLoading, refetch, isError, handlePageChange } = useTable({
+    const { data, isLoading, refetch, isError, handlePageChange, handleQueryString } = useTable({
         models,
         pagination
     });
@@ -42,7 +41,11 @@ const Users = ({ }) => {
                     desc={'Bảng mô tả về danh sách người dùng , có các chức năng quản lý người dùng,...'}
                 >
                     <div className='flex justify-between'>
-                        <CustomFilter filters={filters} models={models} />
+                        <CustomFilter
+                            handleQueryString={(filter) => { handlePageChange(filter) }}
+                            refetch={refetch}
+                            filters={filters}
+                            models={models} />
                         <Link to={`/admin/${models}/store`}>
                             <Button className="bg-red-500 hover:bg-emerald-400">
                                 Thêm mới bản ghi

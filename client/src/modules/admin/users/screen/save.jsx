@@ -52,13 +52,13 @@ const StoreUser = () => {
     }, [])
     return (
         <>
-            <div className="flex flex-1 flex-col page-wrapper">
+            <div className="flex flex-1 flex-col overflow-x-auto h-full page-wrapper">
                 <Heading
                     heading={headingConfig}
                     breadcrumb={breadcrumb}
                 />
                 <div className="page-container">
-                    <div className="grid grid-cols-12 gap-2">
+                    <div className="grid grid-cols-1 gap-2">
                         <div className="col-span-5">
                             <CustomNotice />
                         </div>
@@ -69,16 +69,16 @@ const StoreUser = () => {
                                 desc={"Điền đầy đủ thông tin để tạo tài khoản người dùng"}
                                 loading={false}>
                                 <FormProvider {...methods}>
-                                    <form onSubmit={handleSubmit(submitHandler)} className="space-y-6 max-w-md">
+                                    <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
                                         <div className="grid grid-cols-1 gap-2">
-                                            <div className="col-span-1">
+                                            <div className="col-span-6">
                                                 <CustomInput
                                                     name="name"
                                                     label="Tên người dùng"
                                                     required={true}
                                                 />
                                             </div>
-                                            <div className="col-span-5">
+                                            <div className="col-span-6">
                                                 <CustomInput
                                                     name="email"
                                                     label="Email"
@@ -86,27 +86,58 @@ const StoreUser = () => {
                                                     required={true}
                                                 />
                                             </div>
-                                            <div className="col-span-7">
+                                            <div className="col-span-6">
                                                 <CustomInput
-                                                    name="password"
-                                                    label="Mật khẩu"
-                                                    type="password"
+                                                    name="phone"
+                                                    label="Số điện thoại"
+                                                    type="text"
                                                     autoComplete="off"
                                                     required={true}
                                                 />
                                             </div>
-                                            <div>
-                                                <Avatar>
-                                                    <AvatarImage src="https://github.com/shadcn.png" />
-                                                    <AvatarFallback>CN</AvatarFallback>
-                                                </Avatar>
+                                            <div className="col-span-6">
+                                                <CustomInput
+                                                    name="address"
+                                                    label="Địa chỉ"
+                                                    type="text"
+                                                    autoComplete="off"
+                                                    required={true}
+                                                />
+                                            </div>
+                                            <div className="col-span-6">
+                                                <CustomInput
+                                                    name="gender"
+                                                    label="Ngày sinh"
+                                                    type="text"
+                                                    autoComplete="off"
+                                                    required={true}
+                                                />
+                                            </div>
+                                            <div className="col-span-6">
+                                                <CustomInput
+                                                    name="role"
+                                                    label="Vai trò"
+                                                    type="text"
+                                                    autoComplete="off"
+                                                    required={true}
+                                                />
+                                            </div>
+                                            <div className="col-span-1">
+
                                             </div>
                                         </div>
-                                        <LoadingButton
-                                            loading={isLoading}
-                                            className={"bg-sky-600"}
-                                            text="Lưu lại" />
+                                        <div className="mr-10">
+                                            <LoadingButton
+                                                loading={isLoading}
+                                                className={"bg-sky-600"}
+                                                text="Hủy bỏ" />
 
+                                            <LoadingButton
+                                                loading={isLoading}
+                                                className={"bg-sky-600"}
+                                                text="Lưu lại" />
+
+                                        </div>
                                     </form>
                                 </FormProvider>
                             </CustomCard>

@@ -28,12 +28,6 @@ const CustomTable = ({
         alertDialogOpen,
         confirmAction
     } = useDialog(refetch);
-    // const { handleChecked, setInitalColumnState, columnState } = useColumnState();
-    // useEffect(() => {
-    //     if (!isLoading && data[models]) {
-    //         setInitalColumnState(data[models], 'status')
-    //     }
-    // }, [isLoading, data])
     return (
         <>
             <Table className="border border-solid">
@@ -85,10 +79,7 @@ const CustomTable = ({
                                             }
                                             <TableCell className={"text-center"}>
                                                 <Switch
-                                                    value={row.id}
                                                     checked={row.status}
-                                                    onCheckedChange=
-                                                    {() => handleSwitchStatus(row.id, row.status, models)}
                                                     className="data-[state=checked]:bg-emerald-500 cursor-pointer"
                                                 />
                                             </TableCell>

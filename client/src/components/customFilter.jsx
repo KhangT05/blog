@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import useDebounce from '@/hooks/useDebounce'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import {
@@ -7,14 +9,20 @@ import {
     SelectTrigger,
     SelectValue
 } from './ui/select'
-const CustomFilter = ({ filters, models }) => {
+import useFilter from '@/hooks/useFilter'
+const CustomFilter = ({ filters, model, handleQueryString, refetch }) => {
+    const { debounce } = useDebounce();
+    const { filter, keyword, handleFilters, debounceInputSearch } = useFilter({ debounce });
+    useEffect(() => {
+        handleQueryString({ ...filter, keyword: keyword });
+    }, [filter, keyword])
     return (
         <div className='flex'>
             {
                 filters && filters.map((filter) => (
                     <Select
                         key={filter.key}
-                        onValueChange={() => { }}
+                        onValueChange={(value) => { handleFilters(value, 'status') }}
                         defaultValue={filter.defaultValue}
                         name={filter.key}
                     >
@@ -37,8 +45,12 @@ const CustomFilter = ({ filters, models }) => {
                         className="w-40"
                         type="text"
                         placeholder="Nhập từ khóa..."
+                        onChange={(e) => { debounceInputSearch(e.target.value) }}
+                        defaultValue={keyword}
                     />
-                    <Button className="bg-sky-400 hover:bg-emerald-500 cursor-pointer">Tìm kiếm</Button>
+                    <Button
+                        onClick={(debounce) => { debounceInputSearch(debounce) }}
+                        className="bg-sky-400 hover:bg-emerald-500 cursor-pointer">Tìm kiếm</Button>
                 </div>
             }
         </div >

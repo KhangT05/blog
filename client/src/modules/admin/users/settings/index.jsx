@@ -1,5 +1,5 @@
 import { Trash, FilePenLine } from "lucide-react";
-
+import { formatDatetime } from "@/contanst/general";
 // export const breadcrumb = [
 //     {
 //         title: 'Quản lý người dùng',
@@ -32,11 +32,11 @@ export const tableColumn = [
     },
     {
         name: 'Ngày tạo',
-        render: (item) => <span>{item.created_at}</span>
+        render: (item) => <span>{formatDatetime(item.created_at)}</span>
     },
     {
         name: 'Ngày cập nhật',
-        render: (item) => <span>{item.updated_at}</span>
+        render: (item) => <span>{formatDatetime(item.updated_at)}</span>
     }
 ]
 export const buttonActions = [
