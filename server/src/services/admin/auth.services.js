@@ -1,4 +1,4 @@
-const pool = require('../config/database');
+const pool = require('../../config/database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {
@@ -6,9 +6,9 @@ const {
     ConFlictRequestError,
     UnauthorizedRequestError,
     NotFoundRequestError
-} = require('../middleware/error.respone')
+} = require('../../middleware/error.respone')
 const validateUser = async ({ email }) => {
-    const query = 'SELECT id,name,email,password,role FROM users WHERE email = ?';
+    const query = 'SELECT email,password,role FROM users WHERE email = ? and status = 1';
     const [rows] = await pool.promise().query(query, [email])
     return rows.length > 0 ? rows[0] : null
 }
@@ -28,7 +28,7 @@ const register = async ({ name, email, password }) => {
 const login = async ({ email, password }) => {
     const user = await validateUser({ email });
     if (!user) {
-        throw new NotFoundRequestError('Email này không tồn tại');
+        throw new NotFoundRequestError('Email này không tồn tại hoặc đã bị khóa');
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {

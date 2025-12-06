@@ -1,9 +1,9 @@
-const pool = require('../config/database');
+const pool = require('../../config/database');
 const {
     BadRequestError,
     ConFlictRequestError,
     NotFoundRequestError
-} = require('../middleware/error.respone')
+} = require('../../middleware/error.respone')
 const store = async (name, guard_name, description, cat = []) => {
     if (!permission || !Array.isArray(permission) || permission.length === 0) {
         throw new BadRequestError('Phải chọn ít nhất một quyền.');

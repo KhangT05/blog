@@ -17,6 +17,7 @@ const CustomPagination = ({ pagination, pageChange }) => {
         for (let i = currentPage; i <= totalPages; i++) {
             page.push(i);
         }
+
         return page;
     }
     const pageNum = generatePageNumber();

@@ -6,7 +6,7 @@ import Footer from '@/components/footer'
 const Layout = () => {
   return (
     <div>
-      <div className='pc-header'>
+      <div className='flex justify-between items-center h-[60px] px-2 py-3 bg-[#f6f7f8] font-medium'>
         <NavbarLeft />
         <NavbarRight />
       </div>

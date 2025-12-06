@@ -130,11 +130,6 @@ const StoreUser = () => {
                                             <LoadingButton
                                                 loading={isLoading}
                                                 className={"bg-sky-600"}
-                                                text="Hủy bỏ" />
-
-                                            <LoadingButton
-                                                loading={isLoading}
-                                                className={"bg-sky-600"}
                                                 text="Lưu lại" />
 
                                         </div>

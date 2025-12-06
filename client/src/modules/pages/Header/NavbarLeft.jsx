@@ -1,7 +1,6 @@
 import React from 'react';
-import './navbar.css';
 import { NavLink } from 'react-router-dom';
-import { index } from './settings/index';
+import { index } from '@/contanst/nav';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,24 +11,25 @@ import {
 import { ChevronDown } from 'lucide-react';
 const NavbarLeft = () => {
   return (
-    <div className='navbar-left'>
-      <ul className='navbar-menu'>
+    <div className='flex h-full items-center'>
+      <ul className='flex gap-2 p-0 m-0 list-none'>
         {
           index.map((item, idx) => (
-            <li key={idx} className='menu-item'>
+            <li key={idx} className='mr-2'>
               {
                 item.children ? (
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="dropdown-menu">
+                    <DropdownMenuTrigger className="flex items-center gap-1.25 cursor-pointer mr-2">
                       {item.title}
                       <ChevronDown />
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className={'dropdown-menu__content'}> {
+                    <DropdownMenuContent className={''}> {
                       item.children.map((sub, subIdx) => (
                         <React.Fragment key={subIdx}>
                           {subIdx !== 0 && <DropdownMenuSeparator />}
                           <DropdownMenuItem asChild>
-                            <NavLink to={sub.path} className={'dropdown-item'}>
+                            <NavLink to={sub.path}
+                              className={'block w-full px-2 py-3 cursor-pointer font-medium !border-0 !rounded-none hover:bg-[#dee4e9] hover:text-[#476075]'}>
                               {sub.title}
                             </NavLink>
                           </DropdownMenuItem>

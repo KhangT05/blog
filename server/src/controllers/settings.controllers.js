@@ -1,4 +1,4 @@
-const settingServices = require("../services/settings.services");
+const settingServices = require("../services/admin/settings.services");
 const { OK, CREATED } = require('../middleware/success.response');
 const store = async (req, res) => {
     return CREATED(

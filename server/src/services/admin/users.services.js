@@ -1,10 +1,10 @@
-const pool = require('../config/database');
+const pool = require('../../config/database');
 const bcrypt = require('bcrypt');
 const {
     BadRequestError,
     ConFlictRequestError,
     NotFoundRequestError
-} = require('../middleware/error.respone')
+} = require('../../middleware/error.respone')
 const store = async (name, email, password, phone, gender, avatar, role = []) => {
     if (!role || role.length === 0 || !Array.isArray(role)) {
         throw new BadRequestError("Role phải là một mảng và không được rỗng.");

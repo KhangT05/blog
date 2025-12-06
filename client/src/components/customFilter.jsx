@@ -22,7 +22,7 @@ const CustomFilter = ({ filters, model, handleQueryString, refetch }) => {
                 filters && filters.map((filter) => (
                     <Select
                         key={filter.key}
-                        onValueChange={(value) => { handleFilters(value, 'status') }}
+                        onValueChange={(value) => { handleFilters(value, filter.key) }}
                         defaultValue={filter.defaultValue}
                         name={filter.key}
                     >
@@ -49,8 +49,8 @@ const CustomFilter = ({ filters, model, handleQueryString, refetch }) => {
                         defaultValue={keyword}
                     />
                     <Button
-                        onClick={(debounce) => { debounceInputSearch(debounce) }}
-                        className="bg-sky-400 hover:bg-emerald-500 cursor-pointer">Tìm kiếm</Button>
+                        className="bg-sky-400 hover:bg-emerald-500 cursor-pointer">Tìm kiếm
+                    </Button>
                 </div>
             }
         </div >

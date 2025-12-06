@@ -25,7 +25,7 @@ const Aside = () => {
                     {
                         index.map((item, idx) => (
                             <AccordionItem key={idx} value={`item-${idx}`}
-                                className="border ">
+                                className="border">
                                 <AccordionTrigger className="px-4 py-3 hover:bg-gray-50">
                                     <div className='flex items-center gap-1'>
                                         {item.icons}

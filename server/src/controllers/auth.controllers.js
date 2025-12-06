@@ -1,4 +1,4 @@
-const authService = require('../services/auth.services');
+const authService = require('../services/admin/auth.services');
 const { OK, CREATED } = require('../middleware/success.response')
 const register = async (req, res) => {
     const result = await authService.register(req.body)

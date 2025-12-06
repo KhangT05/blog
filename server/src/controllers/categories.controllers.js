@@ -1,5 +1,5 @@
 const { CREATED, OK } = require('../middleware/success.response');
-const categoryServices = require('../services/categories.service');
+const categoryServices = require('../services/admin/categories.service');
 const store = async (req, res) => {
     const { name, description } = req.body;
     const randomNumber = Math.floor(10000 + Math.random() * 10)
@@ -16,7 +16,7 @@ const edit = async (req, res) => {
         metaData: await categoryServices.edit(req.params.id, name, description)
     }).send(res)
 }
-const listCategories = async (req, res) => {    
+const listCategories = async (req, res) => {
     return OK(
         res,
         '',

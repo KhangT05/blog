@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 const useFilter = ({ debounce }) => {
     const [searchParams, _] = useSearchParams();
-    const [filters, setFilters] = useState({
+    const [filter, setFilter] = useState({
         perpage: searchParams.get('perpage') || '10',
         status: searchParams.get('status') || undefined
     });
@@ -11,13 +11,13 @@ const useFilter = ({ debounce }) => {
         searchParams.get('keyword') || ''
     );
     const handleFilters = (value, field) => {
-        setFilters((prevFil) => ({ ...prevFil, [field]: value }))
+        setFilter((prevFil) => ({ ...prevFil, [field]: value }))
     }
     const debounceInputSearch = debounce((value) => {
         setKeyword(value)
     }, 300);
     return {
-        filters,
+        filter,
         keyword,
         handleFilters,
         debounceInputSearch

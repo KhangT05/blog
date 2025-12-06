@@ -1,8 +1,8 @@
-const pool = require('../config/database');
+const pool = require('../../config/database');
 const {
     NotFoundRequestError,
     ConFlictRequestError
-} = require('../middleware/error.respone');
+} = require('../../middleware/error.respone');
 class settingServices {
     static store = async (payload) => {
         const {

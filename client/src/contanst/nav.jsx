@@ -42,3 +42,10 @@ export const index = [
         ]
     },
 ]
+// export const profile = [
+//     {
+//         title: 'abc',
+//         links: '',
+//         icons: <User />
+//     }
+// ]

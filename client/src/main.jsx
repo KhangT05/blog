@@ -21,6 +21,7 @@ import Setting from './modules/admin/system/index'
 import Users from './modules/admin/users/screen/index'
 import SaveUser from './modules/admin/users/screen/save'
 import './index.css'
+import Profile from './modules/pages/Users/Profile'
 
 const router = createBrowserRouter([
     {
@@ -40,8 +41,8 @@ const router = createBrowserRouter([
         children:
             [
                 { path: '/sang-tac', element: <Sangtac /> },
-                { path: '/thao-luan/huong-dan-dang-truyen', element: <Layout /> }
-
+                { path: '/thao-luan/huong-dan-dang-truyen', element: <Layout /> },
+                { path: '/profile', element: <Profile /> }
             ]
     },
     {

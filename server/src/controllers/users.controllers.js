@@ -1,4 +1,4 @@
-const userService = require('../services/users.services');
+const userService = require('../services/admin/users.services');
 const { CREATED, OK } = require('../middleware/success.response');
 const { BadRequestError } = require('../middleware/error.respone');
 class UserController {
