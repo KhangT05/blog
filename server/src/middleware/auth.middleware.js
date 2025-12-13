@@ -22,8 +22,8 @@ const authenticateToken = async (req, res, next) => {
     }
 }
 const isAdmin = async (req, res, next) => {
-    const { role } = req.user;
-    if (role !== 'SUPER ADMIN') {
+    const { role_id } = req.user;
+    if (role_id !== 1) {
         throw new ConFlictRequestError("Bạn không có quyền truy cập tài nguyên này.")
     }
     next();

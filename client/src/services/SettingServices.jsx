@@ -1,6 +1,6 @@
 import api from '@/config/axios';
 import { baseSave } from './BaseServices';
-const endpoint = 'setting'
+const endpoint = 'settings'
 const pagination = async () => {
     const response = await api.get(`/${endpoint}/list`);
     return response.data.data;

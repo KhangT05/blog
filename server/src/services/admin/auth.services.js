@@ -8,7 +8,7 @@ const {
     NotFoundRequestError
 } = require('../../middleware/error.respone')
 const validateUser = async ({ email }) => {
-    const query = 'SELECT email,password,role FROM users WHERE email = ? and status = 1';
+    const query = 'SELECT email,password,role_id FROM users WHERE email = ? and status = 1';
     const [rows] = await pool.promise().query(query, [email])
     return rows.length > 0 ? rows[0] : null
 }
@@ -41,7 +41,7 @@ const login = async ({ email, password }) => {
             id: user.id,
             name: user.name,
             email: user.email,
-            role: user.role
+            role_id: user.role_id
         }
     };
 }
@@ -49,10 +49,10 @@ const generateAccessToken = async (user) => {
     const payload = {
         sub: user.id,
         email: user.email,
-        role: user.role,
+        role_id: user.role_id,
     }
     const accessToken = await jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: '1d'
+        expiresIn: '2m'
     });
     return accessToken;
 }
@@ -60,7 +60,7 @@ const generateRefreshToken = async (user) => {
     const payload = {
         sub: user.id,
         email: user.email,
-        role: user.role,
+        role_id: user.role_id,
     }
     const refreshToken = await jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
         expiresIn: '1d'
@@ -76,7 +76,7 @@ const setAuthCookies = (res, tokens) => {
     };
     res.cookie('accessToken', tokens.accessToken, {
         ...cookieOptions,
-        maxAge: 24 * 60 * 60 * 1000,
+        maxAge: 2 * 60 * 1000,
     })
     res.cookie('refreshToken', tokens.refreshToken, {
         ...cookieOptions,
@@ -94,7 +94,7 @@ const verifyToken = async (token, isRefreshToken = false) => {
             success: true,
             userId: decoded.sub,
             email: decoded.email,
-            role: decoded.role
+            role_id: decoded.role_id
         };
     } catch (error) {
         if (error.name === "TokenExpiredError") {
@@ -130,13 +130,23 @@ const refreshToken = async (req, res) => {
             id: user.id,
             name: user.name,
             email: user.email,
-            role: user.role
+            role_id: user.role_id
         }
     }
 }
 const clearCookies = (res) => {
-    res.clearCookie('accessToken', { path: '/' });
-    res.clearCookie('refreshToken', { path: '/' });
+    res.clearCookie('accessToken', {
+        path: '/',
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'development',
+        sameSite: 'strict'
+    });
+    res.clearCookie('refreshToken', {
+        path: '/',
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'development',
+        sameSite: 'strict'
+    });
 }
 module.exports = {
     validateUser,

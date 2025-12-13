@@ -8,13 +8,13 @@ phone VARCHAR(10) UNIQUE,
 gender VARCHAR(20),
 status INT DEFAULT(1),
 avatar LONGTEXT,
-role_id INT DEFAULT (2) NOT NULL,
-FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+role_id INT UNSIGNED DEFAULT(2),
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-deleted_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+deleted_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 )`
 pool.query(users, (err) => {
     if (err) throw err;
-    console.log('add data success')
+    console.log('create users table successfully!')
 });

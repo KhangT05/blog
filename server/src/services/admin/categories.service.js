@@ -1,12 +1,12 @@
 const pool = require('../../config/database');
 const { BadRequestError, ConFlictRequestError, NotFoundRequestError } = require('../../middleware/error.respone');
 const store = async (name, description, slug) => {
-    const [rows] = await pool.promise().query('SELECT name FROM category WHERE name = ?', [name]);
+    const [rows] = await pool.promise().query('SELECT name FROM categories WHERE name = ?', [name]);
     if (rows.length > 0) {
         throw new ConFlictRequestError('Danh mục đã tồn tại.');
     }
     const cateData = { name, description: description || null, slug }
-    const [result] = await pool.promise().query('INSERT INTO category SET ?', cateData);
+    const [result] = await pool.promise().query('INSERT INTO categories SET ?', cateData);
     return {
         id: result.insertId,
         name,
@@ -15,7 +15,7 @@ const store = async (name, description, slug) => {
 }
 const edit = async (id, name, description) => {
     const [rows] = await pool.promise().query(
-        'SELECT id,name,description FROM category WHERE id = ?', [id]
+        'SELECT id,name,description FROM categories WHERE id = ?', [id]
     )
     if (rows.length === 0 || !rows) {
         throw new NotFoundRequestError('Danh mục không tồn tại.')
@@ -23,7 +23,7 @@ const edit = async (id, name, description) => {
     const current = rows[0];
     if (name !== current.name) {
         const [conflict] = await pool.promise().query(
-            'SELECT name FROM category WHERE name = ? OR id != ?', [name, id]
+            'SELECT name FROM categories WHERE name = ? OR id != ?', [name, id]
         );
         if (conflict.length > 0) {
             throw new ConFlictRequestError('Tên danh mục đã được sử dụng.')
@@ -35,7 +35,7 @@ const edit = async (id, name, description) => {
         updated_at: new Date()
     }
     await pool.promise().query(
-        'UPDATE category SET ? WHERE id = ?', [updatedData, id]
+        'UPDATE categories SET ? WHERE id = ?', [updatedData, id]
     );
     return {
         id,
@@ -45,13 +45,13 @@ const edit = async (id, name, description) => {
 }
 const listCategories = async () => {
     const [rows] = await pool.promise().query(
-        'SELECT name FROM category'
+        'SELECT name FROM categories'
     );
     return rows
 }
 const trash = async (id) => {
     await pool.promise().query(
-        'DELETE FROM category WHERE id = ?', [id]
+        'DELETE FROM categories WHERE id = ?', [id]
     )
     return { id }
 }

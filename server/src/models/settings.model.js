@@ -1,5 +1,5 @@
 const pool = require('../config/database')
-const addSettings = `CREATE TABLE IF NOT EXISTS settings(
+const settings = `CREATE TABLE IF NOT EXISTS settings(
 id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 site_name NVARCHAR(255) NOT NULL,
 site_brand LONGTEXT NOT NULL,
@@ -10,7 +10,15 @@ site_social LONGTEXT,
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )`
-pool.query(addSettings, (err) => {
+// pool.query(settings, (err) => {
+//     if (err) throw err;
+//     console.log('create settings table successfully!')
+// });
+const add_status_to_settings_table = `
+ALTER TABLE settings
+ADD COLUMN status bool DEFAULT false AFTER site_social
+`
+pool.query(add_status_to_settings_table, (err) => {
     if (err) throw err;
-    console.log('add data success')
-});
+    console.log('add field to settings table successfully!')
+})

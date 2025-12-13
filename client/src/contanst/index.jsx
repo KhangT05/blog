@@ -58,7 +58,7 @@ export const index = [
         children: [
             {
                 title: 'Cài đặt chung',
-                path: '/admin/settings/general'
+                path: '/admin/settings'
             },
             {
                 title: 'Cài đặt bảo mật',

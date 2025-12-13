@@ -1,10 +1,8 @@
 import api from '../config/axios'
 import { baseSave, updateStatusByField, baseDestroy } from './BaseServices';
 const endpoint = 'users';
-const pagination = async (queryParams = {}) => {
-    const queryString = new URLSearchParams(queryParams).toString();
-    const response = await api.get(`${endpoint}/list?${queryString}`);
-
+const pagination = async () => {
+    const response = await api.get(`${endpoint}/list`);
     return response.data.data;
 };
 const save = async (payload, action, id) => {

@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import Header from '@/components/header'
 import '../../assets/scss/Style.scss'
 const AdminLayout = () => {
+  console.log(123)
   return (
     <div className=''>
       <Aside />

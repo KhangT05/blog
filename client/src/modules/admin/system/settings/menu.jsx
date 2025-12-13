@@ -1,12 +1,12 @@
 export const breadcrumb = [
     {
         title: 'Quản lý hệ thống',
-        route: '/setting'
+        route: '/settings'
     }
 ]
 export const menu = [
     {
         title: 'Cài Đặt Chung',
-        route:'/setting/general'
+        route: '/settings/store'
     }
 ]

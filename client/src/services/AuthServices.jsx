@@ -1,21 +1,20 @@
 import api from '@/config/axios'
 import { toast } from 'sonner';
 export const register = async (data) => {
-    // try {
-    const request = await api.post(`/auth/register`, {
-        name: data.name,
-        email: data.email,
-        password: data.password
-    });
-    // showToast('success', 'Đăng ký thành công')
-    toast.success('Đăng ký thành công')
-    return {
-        user: request.data.user,
+    try {
+        const request = await api.post(`/auth/register`, {
+            name: data.name,
+            email: data.email,
+            password: data.password
+        });
+        toast.success('Đăng ký thành công')
+        return {
+            user: request.data.user,
+        }
+    } catch (error) {
+        handleAxiosError(error)
+        throw error;
     }
-    // } catch (error) {
-    //     handleAxiosError(error)
-    //     throw error;
-    // }
 }
 export const login = async (payload) => {
     try {

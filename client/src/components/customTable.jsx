@@ -118,7 +118,8 @@ const CustomTable = ({
                                     <TableRow>
                                         <TableCell colSpan={tableColumn.length + 3} className="text-center">Không có dữ liệu phù hợp để hiển thị.</TableCell>
                                     </TableRow>
-                                ))
+                                )
+                            )
                     }
                 </TableBody>
             </Table >

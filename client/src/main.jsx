@@ -13,8 +13,6 @@ import NotFound from './modules/NotFound/NotFound'
 import Login from './modules/AuthLayout/Login/Login'
 import Register from './modules/AuthLayout/Register/Register'
 import Layout from './modules/pages/Layout'
-// import AdminAuthMiddleware from './middleware/AdminAuthMiddleware'
-import AdminAuthMiddleware from './middleware/AdminAuthMiddleware'
 import Sangtac from './modules/pages/SangTac/index'
 import AdminLayout from './modules/admin/AdminLayout'
 import Setting from './modules/admin/system/index'
@@ -22,7 +20,6 @@ import Users from './modules/admin/users/screen/index'
 import SaveUser from './modules/admin/users/screen/save'
 import './index.css'
 import Profile from './modules/pages/Users/Profile'
-
 const router = createBrowserRouter([
     {
         path: '/login', element:
@@ -34,7 +31,7 @@ const router = createBrowserRouter([
     {
         path: '/',
         element:
-            <AuthMiddleware>
+            <AuthMiddleware requiredRole={1} redirectPath=''>
                 <Layout />
             </AuthMiddleware>
         ,
@@ -48,9 +45,9 @@ const router = createBrowserRouter([
     {
         path: '/admin',
         element:
-            // <AdminAuthMiddleware>
-            <AdminLayout />
-        // </AdminAuthMiddleware >
+            <AuthMiddleware requiredRole={2} redirectPath='/admin'>
+                <AdminLayout />
+            </AuthMiddleware >
         ,
         children: [
             { path: 'settings', element: <Setting /> },
@@ -62,7 +59,7 @@ const router = createBrowserRouter([
         path: '*',
         element: <NotFound />
     }
-])
+]);
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         <Provider store={store}>

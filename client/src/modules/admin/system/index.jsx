@@ -8,7 +8,6 @@ import CustomInput from "@/components/customInput";
 import LoadingButton from '@/components/LoadingButton';
 /** SERVICES */
 import { store } from '@/services/SettingServices';
-import { toast } from 'sonner';
 const Setting = () => {
     const schema = yup.object({
         site_name: yup.string()
