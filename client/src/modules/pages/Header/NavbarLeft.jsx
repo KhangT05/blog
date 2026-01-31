@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { index } from '@/contanst/nav';
 import {
   DropdownMenu,
@@ -13,6 +13,9 @@ const NavbarLeft = () => {
   return (
     <div className='flex h-full items-center'>
       <ul className='flex gap-2 p-0 m-0 list-none'>
+        <li><Link to={"/"} className='h-auto w-full'>
+          <img src='logo.jpg' alt='logo' className='object-contain h-7 w-auto' />
+        </Link></li>
         {
           index.map((item, idx) => (
             <li key={idx} className='mr-2'>
@@ -23,7 +26,7 @@ const NavbarLeft = () => {
                       {item.title}
                       <ChevronDown />
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className={''}> {
+                    {/* <DropdownMenuContent className={''}> {
                       item.children.map((sub, subIdx) => (
                         <React.Fragment key={subIdx}>
                           {subIdx !== 0 && <DropdownMenuSeparator />}
@@ -36,7 +39,7 @@ const NavbarLeft = () => {
                         </React.Fragment>
                       ))
                     }
-                    </DropdownMenuContent>
+                    </DropdownMenuContent> */}
                   </DropdownMenu>
                 ) : (
                   <NavLink to={item.path}>{item.title}</NavLink>

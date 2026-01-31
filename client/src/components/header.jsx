@@ -10,7 +10,6 @@ const Header = () => {
         if (auth) {
             dispatch(setLogout());
             navigate('/login')
-
         }
     }
     return (

@@ -24,23 +24,16 @@ const NavbarRight = () => {
                     placeholder="Tìm kiếm..."
                     onChange={(e) => setIsSearch(e.target.value)} />
             </div>
-            <div className="relative group">
+            {/* <div className="relative group">
                 <Link className="flex cursor-pointer" to={'/profile'}>
                     <User />
                     <span>Thông tin tài khoản</span>
                 </Link>
-                {/* <div className="absolute w-42 z-50 shadow-lg bg-[#f8f8fc] rounded-lg hidden">
-                    <Link className="block">1
-                    </Link>
-                    <Link>2
-                    </Link>
-                    <Link>3
-                    </Link>
-                </div> */}
             </div>
             <button onClick={handleLogout} className="hover:text-[#667eea] hover:cursor-pointer">
                 Đăng xuất
-            </button>
+            </button> */}
+
         </div>
     )
 }

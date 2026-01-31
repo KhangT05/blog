@@ -13,51 +13,44 @@ import NotFound from './modules/NotFound/NotFound'
 import Login from './modules/AuthLayout/Login/Login'
 import Register from './modules/AuthLayout/Register/Register'
 import Layout from './modules/pages/Layout'
-import Sangtac from './modules/pages/SangTac/index'
+import Sangtac from './modules/pages/Thaoluan'
 import AdminLayout from './modules/admin/AdminLayout'
 import Setting from './modules/admin/system/index'
 import Users from './modules/admin/users/screen/index'
 import SaveUser from './modules/admin/users/screen/save'
 import './index.css'
 import Profile from './modules/pages/Users/Profile'
+import Thaoluan from './modules/pages/Thaoluan'
 const router = createBrowserRouter([
     {
-        path: '/login', element:
-            <Login />
-    },
-    {
-        path: '/register', element: <Register />
-    },
-    {
         path: '/',
-        element:
-            <AuthMiddleware requiredRole={1} redirectPath=''>
-                <Layout />
-            </AuthMiddleware>
-        ,
+        Component: Layout,
         children:
             [
-                { path: '/sang-tac', element: <Sangtac /> },
-                { path: '/thao-luan/huong-dan-dang-truyen', element: <Layout /> },
-                { path: '/profile', element: <Profile /> }
+                { path: '/trang-chu', Component: Layout },
+                { path: '/thao-luan', Component: Thaoluan },
+                { path: '/profile', Component: Profile, middleware: [AuthMiddleware] }
             ]
     },
     {
+        path: '/login', Component: Login
+    },
+    {
+        path: '/register', Component: Register
+    },
+    {
         path: '/admin',
-        element:
-            <AuthMiddleware requiredRole={2} redirectPath='/admin'>
-                <AdminLayout />
-            </AuthMiddleware >
-        ,
+        middleware: [AuthMiddleware],
+        Component: AdminLayout,
         children: [
-            { path: 'settings', element: <Setting /> },
-            { path: 'users/index', element: <Users /> },
-            { path: 'users/store', element: <SaveUser /> }
+            { path: 'settings', Component: Setting },
+            { path: 'users/index', Component: Users },
+            { path: 'users/store', Component: SaveUser }
         ]
     },
     {
         path: '*',
-        element: <NotFound />
+        Component: <NotFound />
     }
 ]);
 createRoot(document.getElementById('root')).render(

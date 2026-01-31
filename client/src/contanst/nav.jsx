@@ -1,51 +1,14 @@
 export const index = [
     {
-        title: 'Sáng tác',
-        path: '/sang-tac'
+        title: 'Chủ đề',
+        path: '/'
     },
     {
-        title: 'AI dịch',
-        path: '/ai-dich'
-    },
-    {
-        title: 'Xuất bản',
-        path: '/xuat-ban'
+        title: 'Chủ đề',
+        path: '/'
     },
     {
         title: 'Thảo luận',
         path: '/thao-luan'
     },
-    {
-        title: 'Danh sách',
-        path: '/danh-sach'
-    },
-    {
-        title: 'Hướng dẫn',
-        path: '/',
-        children: [
-            {
-                title: 'Đăng truyện',
-                path: '/thao-luan/huong-dan-dang-truyen'
-            },
-            {
-                title: 'Giới thiệu',
-                path: '/thao-luan/gioi-thieu-truyen-tranh'
-            },
-            {
-                title: 'Góp ý - Báo lỗi',
-                path: '/thao-luan-va-bao-loi'
-            },
-            {
-                title: 'Privacy Policy',
-                path: '/privacy-policy'
-            },
-        ]
-    },
 ]
-// export const profile = [
-//     {
-//         title: 'abc',
-//         links: '',
-//         icons: <User />
-//     }
-// ]
