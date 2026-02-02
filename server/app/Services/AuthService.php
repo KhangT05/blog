@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
 class AuthService extends BaseService
@@ -152,7 +151,7 @@ class AuthService extends BaseService
     private function checkHasHeader(Request $request): self
     {
         if (!$request->hasHeader('X-CRSF-TOKEN')) {
-            throw new NotFoundHttpException('Không tồn tại crsf token hợp lệ');
+            // throw new Notfound('Không tồn tại crsf token hợp lệ');
         }
         if (!$crsfToken = $this->crsfTokenRepository->findByCrsfToken($request->header('X_CRSF_TOKEN'))) {
             throw new ModelNotFoundException('Không tồn tại record này');

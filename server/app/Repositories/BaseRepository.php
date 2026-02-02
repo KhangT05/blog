@@ -16,6 +16,12 @@ class BaseRepository
     {
         return $this->model->create($payload)->fresh();
     }
+    public function update(int $id = 0, array $payload = []): mixed
+    {
+        $model = $this->findByid($id);
+        $model->fill($payload);
+        return $model->update($id, $payload);
+    }
     public function findByid(int $id = 0, array $relation = [], array $column = ['*'])
     {
         return $this->model->select($column)->with($relation)->find($id);

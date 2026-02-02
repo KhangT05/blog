@@ -27,6 +27,7 @@ export const login = async (payload) => {
         }
 
         toast.success('Đăng nhập thành công')
+        console.log(response);
         return {
             user: response.data.data.user,
             token: response.data.data.accessToken
