@@ -20,7 +20,8 @@ class BaseRepository
     {
         $model = $this->findByid($id);
         $model->fill($payload);
-        return $model->update($id, $payload);
+        $model->save();
+        return $model;
     }
     public function findByid(int $id = 0, array $relation = [], array $column = ['*'])
     {
@@ -30,5 +31,9 @@ class BaseRepository
     {
         $model = $this->findByid($id);
         return $model->delete();
+    }
+    public function getFillable()
+    {
+        return $this->model->getFillable();
     }
 }
