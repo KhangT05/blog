@@ -1,16 +1,15 @@
 import { Outlet } from 'react-router-dom'
-import Aside from '../../components/Aside'
-import { useEffect } from 'react'
+import Sidebar from '../../components/Sidebar'
 import Header from '@/components/header'
-import '../../assets/scss/Style.scss'
 const AdminLayout = () => {
-  console.log(123)
   return (
-    <div className=''>
-      <Aside />
-      <div className="main-content">
+    <div className='flex min-h-screen bg-gray-50'>
+      <Sidebar />
+      <div className="flex-1 flex flex-col">
         <Header />
-        <Outlet />
+        <main className='flex-1 p-6 overflow-auto'>
+          <Outlet />
+        </main>
       </div>
     </div>
   )

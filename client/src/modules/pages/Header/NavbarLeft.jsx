@@ -12,10 +12,12 @@ import { ChevronDown } from 'lucide-react';
 const NavbarLeft = () => {
   return (
     <div className='flex h-full items-center'>
-      <ul className='flex gap-2 p-0 m-0 list-none'>
-        <li><Link to={"/"} className='h-auto w-full'>
-          <img src='logo.jpg' alt='logo' className='object-contain h-7 w-auto' />
-        </Link></li>
+      <ul className='flex gap-4 p-0 m-0 list-none'>
+        <li>
+          <Link to='/' className='block'>
+            <img src='/vite.svg' alt='logo' className='object-contain h-7 w-auto' />
+          </Link>
+        </li>
         {
           index.map((item, idx) => (
             <li key={idx} className='mr-2'>
@@ -24,9 +26,9 @@ const NavbarLeft = () => {
                   <DropdownMenu>
                     <DropdownMenuTrigger className="flex items-center gap-1.25 cursor-pointer mr-2">
                       {item.title}
-                      <ChevronDown />
+                      <ChevronDown className='w-4 h-4' />
                     </DropdownMenuTrigger>
-                    {/* <DropdownMenuContent className={''}> {
+                    <DropdownMenuContent className={''}> {
                       item.children.map((sub, subIdx) => (
                         <React.Fragment key={subIdx}>
                           {subIdx !== 0 && <DropdownMenuSeparator />}
@@ -39,10 +41,15 @@ const NavbarLeft = () => {
                         </React.Fragment>
                       ))
                     }
-                    </DropdownMenuContent> */}
+                    </DropdownMenuContent>
                   </DropdownMenu>
                 ) : (
-                  <NavLink to={item.path}>{item.title}</NavLink>
+                  <NavLink to={item.path} className={({ isActive }) =>
+                    `px-3 py-2 text-sm font-medium transition-colors ${isActive
+                      ? 'text-blue-600'
+                      : 'text-gray-700 hover:text-blue-600'
+                    }`
+                  }>{item.title}</NavLink>
                 )
               }
             </li>

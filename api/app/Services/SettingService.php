@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
-use App\Repositories\RoleRepository;
+use App\Repositories\SettingRepository;
 use Illuminate\Http\Request;
 
-class RoleService extends BaseService
+class SettingService extends BaseService
 {
+    protected $repository;
     public function __construct(
-        RoleRepository $repository
+        SettingRepository $repository
     ) {
         $this->repository = $repository;
     }
@@ -16,7 +17,7 @@ class RoleService extends BaseService
     {
         return $this->initialBasicData($request);
     }
-    public function initialBasicData(Request $request)
+    protected function initialBasicData(Request $request)
     {
         $fillable = $this->repository->getFillable();
         $payload = $request->only($fillable);

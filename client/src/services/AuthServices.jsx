@@ -51,8 +51,9 @@ export const fetchUser = async () => {
 export const logout = async () => {
     // try {
     const response = await api.post('/auth/logout');
+    console.log(response);
     toast.success("Đăng xuất thành công", 'success')
-    return response
+    return response;
     // } catch (error) {
     //     showToast("Đăng xuất thât bại", "error")
     // }

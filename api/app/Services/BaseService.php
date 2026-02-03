@@ -37,4 +37,10 @@ abstract class BaseService
             throw $th;
         }
     }
+    public function show(int $id = 0)
+    {
+        $this->checkExistsModel($id);
+        $dd = $this->repository->findByid($id);
+        return $dd;
+    }
 }

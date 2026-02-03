@@ -4,9 +4,7 @@ export const index = [
     {
         label: 'Bảng điều khiển',
         icons: <CircleGauge />,
-        children: [
-
-        ]
+        path: '/admin/home'
     },
     {
         label: 'Quản lý người dùng ',
@@ -22,36 +20,6 @@ export const index = [
             },
         ]
     },
-    // {
-    //     label: 'Quản lý bài viết',
-    //     active: ['posts'],
-    //     icons: <User />,
-    //     children: [
-    //         {
-    //             title: 'Danh sách bài viết',
-    //             path: '/admin/posts/index'
-    //         },
-    //         {
-    //             title: 'Thêm bài viết',
-    //             path: '/admin/posts/store'
-    //         },
-    //     ]
-    // },
-    // {
-    //     label: 'Quản lý danh mục',
-    //     active: ['categories'],
-    //     icons: "",
-    //     children: [
-    //         {
-    //             title: 'Danh sách danh mục',
-    //             path: '/admin/categories/index'
-    //         },
-    //         {
-    //             title: 'Thêm danh mục',
-    //             path: '/admin/categories/store'
-    //         },
-    //     ]
-    // },
     {
         label: 'Cài đặt hệ thống',
         icons: <Settings />,
@@ -67,3 +35,33 @@ export const index = [
         ]
     }
 ];
+// {
+//     label: 'Quản lý bài viết',
+//     active: ['posts'],
+//     icons: <User />,
+//     children: [
+//         {
+//             title: 'Danh sách bài viết',
+//             path: '/admin/posts/index'
+//         },
+//         {
+//             title: 'Thêm bài viết',
+//             path: '/admin/posts/store'
+//         },
+//     ]
+// },
+// {
+//     label: 'Quản lý danh mục',
+//     active: ['categories'],
+//     icons: "",
+//     children: [
+//         {
+//             title: 'Danh sách danh mục',
+//             path: '/admin/categories/index'
+//         },
+//         {
+//             title: 'Thêm danh mục',
+//             path: '/admin/categories/store'
+//         },
+//     ]
+// },

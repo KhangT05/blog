@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 
-class AuthService extends BaseService
+class AuthService
 {
     use HasTransaction;
     private $auth;

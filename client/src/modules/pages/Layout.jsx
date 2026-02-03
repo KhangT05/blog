@@ -5,17 +5,16 @@ import NavbarRight from './Header/NavbarRight'
 import Footer from '@/components/footer'
 const Layout = () => {
   return (
-    <div>
-      <div className='flex justify-between items-center h-[60px] px-2 py-3 bg-[#f6f7f8] font-medium'>
+    <div className='min-h-screen flex flex-col'>
+      <div className='flex justify-between items-center
+         h-[60px] px-2 py-3 bg-[#f6f7f8] font-medium sticky shadow-sm z-50 top-0'>
         <NavbarLeft />
         <NavbarRight />
       </div>
-      <div>
+      <main>
         <Outlet />
-      </div>
-      <div>
-        <Footer />
-      </div>
+      </main>
+      <Footer />
     </div>
   )
 }

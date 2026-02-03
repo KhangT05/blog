@@ -13,8 +13,8 @@ class Role extends Model
         'publish',
         'description'
     ];
-    public function user_role(): BelongsToMany
+    public function users(): BelongsToMany
     {
-        return $this->belongsToMany('users_roles', 'role_id', 'user_id');
+        return $this->belongsToMany(User::class, 'users_roles')->withTimestamps();
     }
 }

@@ -1,7 +1,6 @@
 import { Loader2 } from "lucide-react"
 import {
     Card,
-    CardAction,
     CardContent,
     CardDescription,
     CardFooter,
@@ -19,7 +18,7 @@ const CustomCard = ({
     footerDesc
 }) => {
     return (
-        <Card className="relative rouded-[5px] overflow-hidden">
+        <Card>
             {
                 openHeader && (
                     <CardHeader className="border-b">
@@ -28,7 +27,7 @@ const CustomCard = ({
                     </CardHeader>
                 )
             }
-            <CardContent className={`${className} py-[20px]`}>
+            <CardContent className={`${className}`}>
                 {children}
             </CardContent>
             {

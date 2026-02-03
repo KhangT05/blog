@@ -1,11 +1,11 @@
 export const index = [
     {
-        title: 'Chủ đề',
-        path: '/'
+        title: 'Trang chủ',
+        path: '/trang-chu'
     },
     {
         title: 'Chủ đề',
-        path: '/'
+        path: '/chu-de'
     },
     {
         title: 'Thảo luận',

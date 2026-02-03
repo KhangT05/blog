@@ -7,6 +7,7 @@ const CustomInput = ({
     type = "text",
     className = '',
     autoComplete = "",
+    placeholder = "",
     ...restProps
 }) => {
     const { register, formState: { errors } } = useFormContext();
@@ -14,8 +15,8 @@ const CustomInput = ({
     return (
         <>
             {restProps.required}
-            <div className={className}>
-                <Label htmlFor={name}>
+            <div className={`space-y-2${className}`}>
+                <Label htmlFor={name} className="text-sm font-medium text-gray-700">
                     {label}
                     {
                         restProps.required && <span className="text-sm text-red-600">*</span>
@@ -27,6 +28,7 @@ const CustomInput = ({
                     autoComplete={autoComplete}
                     {...register(name)}
                     {...(restProps.onChange ? { onChange: restProps.onChange } : {})}
+                    className={`${error ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
                 />
                 {
                     error && (
