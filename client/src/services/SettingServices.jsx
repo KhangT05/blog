@@ -6,6 +6,7 @@ const pagination = async () => {
     return response.data.data;
 };
 const store = async (payload, action, id) => {
+    console.log(payload);
     return baseSave(`/${endpoint}/store`, payload, action, id, {})
 }
 export {

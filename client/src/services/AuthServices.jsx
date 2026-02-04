@@ -24,13 +24,18 @@ export const login = async (payload) => {
         });
         if (response.data.data.accessToken) {
             localStorage.setItem('accessToken', response.data.data.accessToken);
+        };
+        const data = response.data.data;
+        if (data.accessToken) {
+            localStorage.setItem('accessToken', data.accessToken);
         }
-
+        if (data.crsfToken) {
+            localStorage.setItem('crsfToken', data.crsfToken);
+        }
         toast.success('Đăng nhập thành công')
-        console.log(response);
         return {
-            user: response.data.data.user,
-            token: response.data.data.accessToken
+            user: data.user,
+            token: data.accessToken
         };
     } catch (error) {
         toast.error(error.response?.data?.message || 'Đăng nhập thất bại');
@@ -42,19 +47,18 @@ export const fetchUser = async () => {
     try {
         const response = await api.get('/auth/me');
         return {
-            user: response.data.data.user
+            user: response.data.data
         }
     } catch (error) {
         return null;
     }
 }
 export const logout = async () => {
-    // try {
-    const response = await api.post('/auth/logout');
-    console.log(response);
-    toast.success("Đăng xuất thành công", 'success')
-    return response;
-    // } catch (error) {
-    //     showToast("Đăng xuất thât bại", "error")
-    // }
+    try {
+        const response = await api.post('/auth/logout');
+        toast.success("Đăng xuất thành công", 'success')
+        return response;
+    } catch (error) {
+        showToast("Đăng xuất thât bại", "error")
+    }
 }

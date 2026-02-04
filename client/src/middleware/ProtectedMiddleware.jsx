@@ -1,39 +1,32 @@
 import { setLogin, setLogout } from "@/redux/slice/authSlice";
 import { fetchUser } from "@/services/AuthServices";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Navigate, Outlet, useNavigate } from "react-router-dom"
-function AuthMiddleware() {
+function ProtectedMiddleware() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const { user, isAuthenticated } = useSelector(state => state.auth);
     useEffect(() => {
         const checkAuthenticate = async () => {
-            if (user === null || !isAuthenticated) {
-                try {
-                    const userData = await fetchUser();
-                    if (userData.user.role == 'Admin') {
-                        dispatch(setLogin(userData));
-                        navigate('/admin');
-                    }
-                    else {
-                        navigate('/403');
-                    }
-                } catch (error) {
-                    dispatch(setLogout());
-                    navigate('/');
-                }
-                finally {
-                    setIsLoading(false)
-                }
+            if (user && isAuthenticated) {
+                setIsLoading(false);
+                return;
             }
-            else {
+            try {
+                const userData = await fetchUser();
+                if (userData && userData.user) {
+                    dispatch(setLogin(userData));
+                }
+            } catch (error) {
+            }
+            finally {
                 setIsLoading(false);
             }
         }
         checkAuthenticate();
-    }, [dispatch, navigate, isAuthenticated, user,]);
+    }, [navigate, isAuthenticated, user,]);
     if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
@@ -44,6 +37,6 @@ function AuthMiddleware() {
     if (!user && !isAuthenticated) {
         return <Navigate to="/auth/login" replace />;
     }
-    return isAuthenticated && user ? <Outlet /> : null
+    return <Outlet />
 }
-export default AuthMiddleware
+export default ProtectedMiddleware

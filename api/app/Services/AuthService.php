@@ -22,8 +22,8 @@ class AuthService
 {
     use HasTransaction;
     private $auth;
-    private const ACCESS_TOKEN_TIME_TO_LIVE = 5;
-    private const REFRESH_TOKEN_TIME_TO_LIVE = 5;
+    private const ACCESS_TOKEN_TIME_TO_LIVE = 5; //minitues
+    private const REFRESH_TOKEN_TIME_TO_LIVE = 30; //day
     private $accessToken;
     private $refreshToken;
     private $crsfToken;
@@ -103,31 +103,43 @@ class AuthService
     {
         return [
             'data' => [
-                'accesstoken' => $this->accessToken,
+                'accessToken' => $this->accessToken,
                 'tokenType' => 'Bearer ',
                 'expiresAt' => $this->auth->factory()->getTTL() * 60,
                 'crsfToken' => $this->crsfToken,
                 'user' => new UserResource($this->auth->user()),
             ],
             'authCookie' => Cookie::make(
-                'refreshToken',
-                $this->refreshToken,
-                self::REFRESH_TOKEN_TIME_TO_LIVE * 24 * 60,
-                '/',
-                null,
-                null,
-                true,
-                false,
-                'Lax'
+                'refreshToken', //name
+                $this->refreshToken, //value
+                self::REFRESH_TOKEN_TIME_TO_LIVE * 24 * 60, //time
+                '/', //path
+                null, //domain
+                null, //secure
+                true, //httpOnly
+                false, //raw 
+                /**
+                 * trong raw true thì không tự encode cookie value
+                 */
+                'Lax' //samesite
+                /**
+             * có 3 giá trị trong samesite là strict , nghiêm ngặt nhất .Chỉ cùng domain mới truyền được
+             * không dùng được cho domain riêng biệt
+             * Lax : trung bình
+             * cookie gửi trong get request từ link bên ngoài
+             * không gửi được post,put,delete
+             * có thể dùng cùng ip
+             */
             )
         ];
     }
     public function getMe()
     {
-
         if (!$user = $this->auth->user()) {
             throw new UserNotDefinedException('Không tìm thấy thông tin phù hợp');
         }
+        // dd($user);
+        $user->load('role');
         return new UserResource($user);
     }
     public function refreshToken(Request $request)

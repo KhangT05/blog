@@ -22,7 +22,6 @@ abstract class BaseService
     public function baseSave(Request $request, ?int $id = 0)
     {
         try {
-            dd($this->repository->getFillable());
             return $this
                 ->beginTransaction()
                 ->perpageModelData($request)

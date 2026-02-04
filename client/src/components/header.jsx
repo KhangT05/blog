@@ -9,7 +9,7 @@ const Header = () => {
         const auth = await logout();
         if (auth) {
             dispatch(setLogout());
-            navigate('/login')
+            navigate('/auth/login')
         }
     }
     return (

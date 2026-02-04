@@ -8,14 +8,35 @@ const api = axios.create({
         "Content-Type": "application/json",
     }
 });
+api.interceptors.request.use(function (config) {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+        config.headers['Authorization'] = `Bearer ${accessToken}`
+    }
+    const crsfToken = localStorage.getItem('crsfToken');
+    if (crsfToken) {
+        config.headers['X-CRSF-TOKEN'] = crsfToken;
+    }
+    return config;
+}, function (error) {
+    return Promise.reject(error);
+});
 const refreshToken = async () => {
     try {
-        const response = await axios.post(`/auth/refresh`, {}, {
+        const response = await axios.post(`${baseUrl}/auth/refresh`, {}, {
             withCredentials: true
         });
-        return response.data.data.accessToken
+        const data = response.data.data;
+        const newaccessToken = data.accessToken;
+        const newcrsfToken = data.crsfToken;
+        localStorage.setItem('accessToken', newaccessToken);
+        if (newcrsfToken) {
+            localStorage.setItem('crsfToken', newcrsfToken);
+        }
+        return newaccessToken;
     } catch (error) {
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('crsfToken');
         throw new Error('Không thể khởi tạo lại access token')
     }
 }
@@ -29,7 +50,7 @@ api.interceptors.response.use(
             originalRequest._retry = true;
             try {
                 const newAccessToken = await refreshToken();
-                localStorage.setItem('accessToken', newAccessToken)
+                localStorage.setItem('accessToken', newAccessToken);
                 originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
                 return api(originalRequest);
             } catch (error) {

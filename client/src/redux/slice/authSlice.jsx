@@ -21,6 +21,7 @@ const authSlice = createSlice({
             state.user = null;
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
+            localStorage.removeItem('crsfToken');
         }
     }
 })

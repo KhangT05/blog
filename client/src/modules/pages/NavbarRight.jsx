@@ -22,7 +22,7 @@ const NavbarRight = () => {
         const auth = await logout();
         if (auth) {
             dispatch(setLogout(auth))
-            navigate('/login');
+            navigate('/auth/login');
         }
     }
     return (

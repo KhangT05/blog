@@ -18,14 +18,6 @@ class RoleSeeder extends Seeder
 
         $roles = [
             [
-                'name' => 'Super Admin',
-                'canonical' => 'super-admin',
-                'description' => 'Quyền quản trị cao nhất, có toàn quyền truy cập và quản lý hệ thống',
-                'publish' => true,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
                 'name' => 'Admin',
                 'canonical' => 'admin',
                 'description' => 'Quản trị viên hệ thống, có quyền quản lý hầu hết các chức năng',
@@ -34,63 +26,14 @@ class RoleSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'name' => 'Manager',
-                'canonical' => 'manager',
-                'description' => 'Người quản lý, có quyền giám sát và quản lý nhân viên',
-                'publish' => true,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'name' => 'Editor',
-                'canonical' => 'editor',
-                'description' => 'Biên tập viên, có quyền tạo và chỉnh sửa nội dung',
-                'publish' => true,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'name' => 'Author',
-                'canonical' => 'author',
-                'description' => 'Tác giả, có quyền tạo và quản lý nội dung của riêng mình',
-                'publish' => true,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'name' => 'Contributor',
-                'canonical' => 'contributor',
-                'description' => 'Người đóng góp, có quyền tạo nội dung nhưng cần duyệt trước khi xuất bản',
-                'publish' => true,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'name' => 'Subscriber',
-                'canonical' => 'subscriber',
-                'description' => 'Người đăng ký, chỉ có quyền xem nội dung',
-                'publish' => true,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'name' => 'Customer',
-                'canonical' => 'customer',
-                'description' => 'Khách hàng, có quyền mua hàng và quản lý đơn hàng của mình',
-                'publish' => true,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'name' => 'Guest',
-                'canonical' => 'guest',
-                'description' => 'Khách, quyền truy cập hạn chế nhất',
+                'name' => 'Member',
+                'canonical' => 'member',
+                'description' => 'Khách hàng, có quyền xem bài và hồ sơ cá nhân.',
                 'publish' => true,
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
         ];
-
         DB::table('roles')->insert($roles);
     }
 }

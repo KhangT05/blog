@@ -10,3 +10,8 @@ export const menu = [
         route: '/settings/store'
     }
 ]
+// export const basicData = [
+//     {
+//         label: 'Tên website'
+//     }
+// ];

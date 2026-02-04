@@ -16,6 +16,7 @@ import {
     CardHeader,
     CardTitle
 } from '@/components/ui/card';
+import CustomCard from '@/components/customCard';
 const Setting = () => {
     const schema = yup.object({
         site_name: yup.string()
@@ -51,56 +52,49 @@ const Setting = () => {
                     </div>
                     <p>Các mục đánh dấu<span className='text-red-500 font-semibold'> (*) </span> là bắt buộc</p>
                 </div>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Thông tin website</CardTitle>
-                        <CardDescription>Tạo mới các thông tin website</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <FormProvider {...methods}>
-                            <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
-                                <div className='grid gird-cols-1 md:grid-cols-2 gap-6'>
-                                    <CustomInput
-                                        name="name"
-                                        label="Tên website"
-                                        type="text"
-                                    />
-                                    <CustomInput
-                                        name="email"
-                                        label="Email liên hệ"
-                                        type="text"
-                                    />
-                                    <CustomInput
-                                        name="phone"
-                                        label="Số điện thoại liên hệ"
-                                        type="text"
-                                    />
-                                    {/* <CustomInput
-                                        name="site_address"
-                                        label="site_address"
-                                        type="text"
-                                    /> */}
-                                    <CustomInput
-                                        name="description"
-                                        label="Mô tả thông tin website"
-                                        type="text"
-                                    />
-                                    <CustomInput
-                                        name="site_fb"
-                                        label="Facebook website"
-                                        type="text"
-                                    />
-                                    <CustomInput
-                                        name="site_ins"
-                                        label="Ins website"
-                                        type="text"
-                                    />
-                                </div>
-                                <LoadingButton loading={isLoading} className={"bg-sky-600"} text="Lưu lại" />
-                            </form>
-                        </FormProvider>
-                    </CardContent>
-                </Card>
+                <CustomCard
+                    openHeader={true}
+                    title={"Thông tin website"}
+                    desc={"Tạo mới các thông tin website"}
+                >
+                    <FormProvider {...methods}>
+                        <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
+                            <div className='grid gird-cols-1 md:grid-cols-2 gap-6'>
+                                <CustomInput
+                                    name="name"
+                                    label="Tên website"
+                                    type="text"
+                                />
+                                <CustomInput
+                                    name="email"
+                                    label="Email liên hệ"
+                                    type="text"
+                                />
+                                <CustomInput
+                                    name="phone"
+                                    label="Số điện thoại liên hệ"
+                                    type="text"
+                                />
+                                <CustomInput
+                                    name="site_address"
+                                    label="site_address"
+                                    type="text"
+                                />
+                                <CustomInput
+                                    name="site_fb"
+                                    label="Facebook website"
+                                    type="text"
+                                />
+                                <CustomInput
+                                    name="site_ins"
+                                    label="Ins website"
+                                    type="text"
+                                />
+                            </div>
+                            <LoadingButton loading={isLoading} className={"bg-sky-600"} text="Lưu lại" />
+                        </form>
+                    </FormProvider>
+                </CustomCard>
             </div>
         </>
     )

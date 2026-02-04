@@ -19,48 +19,76 @@ import Setting from './modules/admin/system/index'
 import Users from './modules/admin/user/screen/index'
 import SaveUser from './modules/admin/user/screen/save'
 import './index.css'
-import Profile from './modules/pages/Users/Profile'
+import Profile from './modules/pages/Profile'
 import Thaoluan from './modules/pages/Thaoluan'
 import AuthLayout from './modules/AuthLayout/authLayout'
 import Home from './modules/pages/Home'
 import Chude from './modules/pages/Chude'
 import AdminHome from './modules/admin/Home'
+import ProtectedMiddleware from './middleware/ProtectedMiddleware'
+import AuthCheck from './middleware/AuthCheck'
+import NoAuthMiddleware from './middleware/NoAuthMiddleware'
+import Forbidden from './modules/NotFound/Forbidden'
 const router = createBrowserRouter([
     {
-        path: '/',
-        Component: Layout,
+        element: <AuthCheck />,
         children:
             [
-                { index: true, element: <Navigate to={"trang-chu"} replace /> },
-                { path: '/trang-chu', Component: Home },
-                { path: '/thao-luan', Component: Thaoluan },
-                { path: '/chu-de', Component: Chude },
-                { path: '/profile', Component: Profile, middleware: [AuthMiddleware] }
+                {
+                    path: '/',
+                    Component: Layout,
+                    children: [
+                        { index: true, element: <Navigate to={"/trang-chu"} replace /> },
+                        { path: '/trang-chu', Component: Home },
+                        { path: '/thao-luan', Component: Thaoluan },
+                        {
+                            element: <ProtectedMiddleware />,
+                            children: [
+                                { path: '/profile', Component: Profile, },
+                                { path: '/chu-de', Component: Chude },
+                            ]
+                        }
+                    ]
+                },
+
             ]
     },
     {
         path: '/auth',
-        Component: AuthLayout,
+        element: <NoAuthMiddleware />,
         children: [
-            { path: 'login', Component: Login },
-            { path: 'register', Component: Register },
+            {
+                element: <AuthLayout />,
+                children: [
+                    { path: 'login', Component: Login },
+                    { path: 'register', Component: Register },
+                ]
+            }
         ]
     },
     {
         path: '/admin',
-        middleware: [AuthMiddleware],
-        Component: AdminLayout,
+        element: <AuthMiddleware />,
         children: [
-            { index: true, Component: AdminLayout },
-            { path: 'home', Component: AdminHome },
-            { path: 'settings', Component: Setting },
-            { path: 'users/index', Component: Users },
-            { path: 'users/store', Component: SaveUser }
+            {
+                element: <AdminLayout />,
+                children: [
+                    { index: true, element: <Navigate to={"/admin"} replace /> },
+                    { path: 'home', Component: AdminHome },
+                    { path: 'settings', Component: Setting },
+                    { path: 'users/index', Component: Users },
+                    { path: 'users/store', Component: SaveUser }
+                ]
+            }
         ]
     },
     {
         path: '*',
-        Component: <NotFound />
+        Component: NotFound
+    },
+    {
+        path: '/403',
+        Component: Forbidden
     }
 ]);
 createRoot(document.getElementById('root')).render(
